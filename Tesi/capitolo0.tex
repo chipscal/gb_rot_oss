@@ -1,14 +1,101 @@
-\chapter{Capitolo0}
-\label{chap:fond}
+\chapter{Materiali e metodi}
+\label{chap:MatAndMethod}
 
-\begin{minipage}{12cm}\textit{bla bla}
+\begin{minipage}{12cm}\textit{In questo capitolo verranno brevemente introdotti gli strumenti che verranno utilizzati in questo lavoro di tesi. Si introdurranno per prima gli strumenti di geometria algebrica quali: ideali, basi di Groebner, ecc. Successivamente verrà data qualche nozione sul controllo Sliding mode e gli osservatori.}
 \end{minipage}
 
 \vspace*{1cm}
 
-\section{BlaBla}
-\label{sec:BlaBla}
+\section{Geometria algebrica}
+\label{sec:Geom}
 
+Per comprendere al meglio il lavoro svolto, conviene introdurre alcuni strumenti algebrici fondamentali. Si introdurranno le definizioni algebriche principali e successivamente si introdurrà il concetto di base di Groebner. 
+
+\begin{defn}Si definisce \textbf{monomio} nelle variabili \textit{$x_1, ..., x_n$} un prodotto del tipo $x_1^{\alpha_1} \cdot ... \cdot x_n^{\alpha_n}$ dove gli $\alpha_i$ sono interi non negativi. Si utilizza inoltre la seguente notazione in forma vettoriale \textbf{$x^\alpha$}, dove $x = [x_1 \dots x_n]^T$ e $\alpha = [\alpha_1 \dots \alpha_n]^T$ 	
+\end{defn}
+
+\begin{defn}Si definisce \textbf{polinomio} \textit{p} con i coefficienti del campo $\mathbb{K}$ una combinazione $\mathbb{K}$-lineare finita di monomi del tipo
+	\begin{center}
+		$p = \sum_{\alpha}^{} a_\alpha x^{\alpha}$, $a_\alpha \in \mathbb{K}$
+	\end{center}
+	si usa indicare con \textbf{termine} l'elemento $\alpha$-esimo della sommatoria.	
+\end{defn}
+
+\begin{defn}
+	Si usa indicare con $\mathbb{K}[x]$ l'insieme di tutti i polinomi che è possibile generare con monomi nelle variabili $x = [x_1 \dots x_n]^T$ e i coefficienti in $\mathbb{K}$.
+\end{defn}
+
+\begin{defn}
+	Dato un set di polinomi $p_1(x), ...m p_s(x) \in \mathbb{K}$ si definisce \textbf{varietà affine} il seguente set
+	\begin{center}
+		$V(p_1(x), ..., p_s(x)) := \{x \in \mathbb{K}^n  \; | \; p_i(x) = 0, i = 1, ..., s \}$
+	\end{center} 
+\end{defn}
+
+Date due varietà affini $V_1(p_1, ..., p_s)$ e $V_2(q_1, ..., q_t)$ è possibile definire le operazioni di unione e intersezione:
+\begin{align}
+	\nonumber
+	& V_1 \cup V_2 = V(p_1q_1, ...,p_1q_t, p_2q_1, ..., p_2q_t, ..., p_sq_1, ..., p_sq_t), \\
+	\nonumber
+	& V_1 \cap V_2 = V(p_1, ..., p_s, q_1, ..., q_t).
+\end{align}
+Si può ora introdurre lo strumento fondamentale utilizzato e alcune sue proprietà.
+	
+\begin{defn}
+	Si definisce \textbf{ideale} \textit{I} un subset di $\mathbb{K}[x]$ che gode delle seguenti proprieta:
+	\begin{enumerate}
+		\item $0 \in I $,
+		\item $f, g \in I \Rightarrow f + g \in I$,
+		\item $f \in I, h \in \mathbb{K}[x] \Rightarrow fh \in I$
+	\end{enumerate}
+\end{defn}
+Un modo naturale di definire un ideale è generarlo a partire da un numero finito di polinomi $p_1, ..., p_s$:
+\begin{center}
+	$\left\langle p_1, ..., p_s \right\rangle := \left\lbrace p \in \mathbb{K}[x] \; | \; p = \sum_{i = 1}^{s} h_ip_i, h_i \in \mathbb{K}[x] \right\rbrace $
+\end{center}
+Siano $p_1, ..., p_s \in \mathbb{K}[x]$, se si considera un ideale $I = \left\langle p_1, ..., p_s \right\rangle$ esso può essere interpretato nella seguente maniera. Si considerino le seguenti equazioni,
+\begin{align}
+\nonumber
+& p_1 = 0 \\
+\nonumber
+& \vdots\\
+\nonumber
+& p_s = 0
+\end{align}
+se considero $h_1, ..., h_s \in \mathbb{K}[x]$ tali equazioni \textbf{avranno come conseguenza} che
+\begin{center}
+	$h_1p_1 + ... + h_sp_s = 0$.
+\end{center}
+Si evince che si può considerare un ideale come l'insieme di tutte le conseguenze generate dal sistema di equazioni omogeneo formato dai polinomi generatori dell'ideale.
+\begin{prop}
+	Considerati i polinomi $p_1, ..., p_s$ e $q_1, ..., q_r \in \mathbb{K}[x]$ si ha che
+	\begin{center}
+		$\left\langle p_1, ..., p_s \right\rangle = \left\langle q_1, ..., q_r \right\rangle \Leftrightarrow V(p_1, ..., p_s) = V(q_1, ..., q_r)$
+	\end{center}
+\end{prop}
+Dalla suddetta proprietà si evince che una varietà affine non viene alterata da un cambio di base, cioè essa è definita dall'ideale stesso e non dai polinomi usati come generatori.
+\begin{defn}
+	Data una varietà affine $V$ si definisce come l'\textbf{ideale di \textit{V}} il set di tutti i polinomi in $\mathbb{K}[x]$ che si annullano su di essa. In formule:
+	\begin{center}
+		$\mathbf{I}(V) := \left\lbrace p \in \mathbb{K}[x] \; | \; p(x) = 0, \quad \forall x \in V \right\rbrace $
+	\end{center}
+\end{defn}
+In generale vale la seguente proprietà:
+\begin{prop}
+	Siano $p_1, ..., p_s \in \mathbb{K}[x]$ allora vale che $\left\langle p_1, ..., p_s \right\rangle \subseteq \mathbf{I}(V(p_1, ..., p_s))$. In generale il converso non vale.
+\end{prop}
+Si può definire infine il concetto di varietà affine di un ideale.
+\begin{defn}
+	Sia $I$ un ideale in $\mathbb{K}[x]$ il set
+	\begin{center}
+		$V(I) := \left\lbrace x \in \mathbb{K}^n \; | |; p(x) = 0, \forall p \in I \right\rbrace$
+	\end{center}
+	si dice \textbf{varietà affine dell'ideale} \textit{I}.
+\end{defn}
+Vale la seguente proprietà che sarà particolarmente utile alla definizione e determinazione delle preannunciate basi di Groebner.
+\begin{prop}
+	Sia \textit{I} un ideale in $\mathbb{K}[x]$ e siano $p_1, ..., p_s$ polinomi, allora vale che $V(I) = V(p_1, ..., p_s)$ per ogni base $\left\lbrace p_1, ..., p_s \right\rbrace$ di $I$
+\end{prop}
 
 
 
