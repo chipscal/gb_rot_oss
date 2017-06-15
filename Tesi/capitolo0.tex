@@ -97,5 +97,123 @@ Vale la seguente proprietà che sarà particolarmente utile alla definizione e d
 	Sia \textit{I} un ideale in $\mathbb{K}[x]$ e siano $p_1, ..., p_s$ polinomi, allora vale che $V(I) = V(p_1, ..., p_s)$ per ogni base $\left\lbrace p_1, ..., p_s \right\rbrace$ di $I$
 \end{prop}
 
+Si consideri un polinomio nella variabile scalare s, del tipo $p = s^n + a_{n-1}s^{n-1} + \cdots + a_1s + a_0$, se considero un ulteriore polinomio $g \in \mathbb{K}[s]$, di grado $k \geq n$ è possibile dimostrare che esso è esprimibile con una relazione del tipo $g = qp + r$, dove $q$ è detto polinomio quoziente e $r$ resto. Inoltre vale che $deg(r) \le deg(g)$. In letteratura esistono diversi algoritmi volti a trovare i polinomio $q$ e $r$, ad esempio l'algoritmo di divisone tra polinomi che estende il concetto di divisione tra scalari.
 
+Un fatto importante da notare è che se si considera un ideale $I = \left\langle g \right\rangle$, dove $g \in \mathbb{K}[x]$, è possibile allora verificare in modo semplice se un polinomio $p \in \mathbb{K}[x]$ appartiene all'ideale $I$ verificando che il resto della divisione di $p$ da $g$ è nullo.
+
+Tale concetto, esteso, porta alla definizione delle suddette basi di Groebner e quindi alla determinazione di una base di ordine ridotto, in senso che verrà presto definito, che definisce un determinato ideale $I$. Al fine di poter estendere tale concetto è necessario poter definire un ordinamento totale tra i polinomi. Nel caso ad una sola variabile, un ordinamento naturale è quello di considerare il grado dei polinomi (l'esponente maggiore con cui compare la variabile del polinomio). Si può estendere tale approccio ma occorre stabilire un ordinamento lessicografico tra i monomi di cui un polinomio si compone. Tale ordinamento può essere definito in diversi modi, nel nostro caso useremo il seguente.
+
+\begin{defn}
+	Si considerino due monomi $x^{\alpha}$ e $x^{\beta}$, dove $x = [x_1 \; ... \; x_n]^T$ e $\alpha, \beta \in \mathbb{Z}^n$, si dice che $x^{\alpha}$ e $x^{\beta}$ sono \textbf{in ordine lessicografico}, in simboli $x^{\alpha} \ge_{Lex} x^{\beta}$, con $x_1 \ge x_2 \ge \cdots \ge x_n$ se vale che
+	il primo elemento non nullo del vettore $\alpha-\beta$ è maggiore di zero.	
+\end{defn}
+Si fa notare che il precedente ordinamento è fortemente influenzato dall'ordinamento che si da alle variabili $x_i$, infatti al variare di tale ordinamento (e corrispettiva variazione dell'ordinamento sui vettori $\alpha$ e $\beta$) si ottengono ordinamenti diversi.
+
+\begin{defn}
+	Dato un polinomio $p \in \mathbb{K}[x]$ se si definisce un ordine lessicografico e si riscrive tale polinomio in modo ordinato, $ p = a_1x^{\alpha_1} + a_2x^{\alpha_2} + \cdots $,  si definiscono il \textbf{leading monomial} $LM(p) := x^{\alpha_1}$, il \textbf{leading coefficient} $LC(p) := a_1$ e il \textbf{leading terms} $LT(p) := a_1x^{\alpha_1}$
+\end{defn}
+Si può estendere quindi il concetto di divisione tra polinomi, al fine di ottenere un algoritmo multi-variabile in grado di dividere un polinomio per un set di polinomi. In altre parole dato un set di polinomi $p_1, ..., p_s$ e un polinomio $p$ appartenenti a $\mathbb{K}[x]$ è possibile trovare $q_1, ... , q_s, r \in \mathbb{K}[x]$ tali che $p = q_1p_1 + q_1p_2 + \cdots + q_sp_s + r$ e vale che o $r = 0$ oppure $r = c_1x^{\beta_1} + c_2x^{\beta_2} + \cdots $ e nessun $c_ix^{\beta_i}$ è divisibile per nessun $LT(p_j)$ con $i = 1,2,..., j = 1, 2,..., s$.
+
+\begin{obs}
+	Si può quindi facilmente capire che dato un ideale $I = \left\langle p_1, ..., p_s \right\rangle, p_i \in \mathbb{K}[x]$ e un ulteriore polinomio $p \in \mathbb{K}[x]$, quest'ultimo diviso per il set suddetto, si otterrà un resto nullo se e solo $ p \in I$. In altre parole si è trovato uno strumento per verificare se un polinomio è conseguenza di un ideale.
+\end{obs}
+
+Si riporta in seguito un algoritmo, chiamato \textbf{Multivariate division algoritmh}, atto a tale scopo. \\
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	\KwData{una tupla ordinata $p_1, ..., p_s$ di polinomi $\in \mathbb{K}[x]$ e un polinomio $p \in \mathbb{K}[x]$}
+	\KwResult{$q_1, ..., q_s, r \in \mathbb{K}[x]$}
+	set $q_1 := 0, ..., q_s := 0$\;
+	set r := 0\;
+	set f := p\;
+	\While{f $\neq$ 0}{
+		i = 1; divisionOccurred = false\;
+		\While{$i \leq s$ AND divisionOccurred == False}{
+			\eIf{LT($p_i$) divide LT(f)}{
+				$q_i = q_i + \frac{LT(f)}{LT(p_i)}$\;
+				$f = f - \frac{LT(f)}{LT(p_i)}p_i$\;
+				divisionOccurred = True\;
+			}{
+				$i = i + 1$\;
+			}
+		}
+		\If{divisionOccurred == False}{
+			$r = r + LT(f) $\;
+			$f = f - LT(f) $\;
+		}
+	}
+	\caption{Multivariate division algoritmh}
+\end{algorithm}
+
+\begin{prob}
+	\label{prob:mvda}
+	Il risultato del precedente algoritmo è fortemente dipendente dall'ordinamento dato ai polinomi $p_i$. Si vogliono trovare, se esistono, strumenti tali da rendere il calcolo del resto di tale divisione indipendente dall'ordinamento dato al set dei polinomi $p_i$.
+\end{prob}
+
+Il problema \ref{prob:mvda} costituisce la motivazione per introdurre le preannunciate basi di Groebner (ridotte), le quali, come si vedrà, permettono di risolvere tale problema.
+
+\begin{defn}
+	Si consideri l'ideale $I \subset \mathbb{K}[x]$ non vuoto, si fissi un ordinamento per i monomi e si definisca l'insieme
+	\begin{center}
+		$LT(I) := \left\lbrace cx^{\alpha} monomio \; | \; \exists f \in I \; \; \; t.c. \; \;  LT(f) = cx^{\alpha} \right\rbrace $
+	\end{center} 
+	e l'ideale dei leading terms generato da tale insieme $\left\langle LT(I) \right\rangle $.
+	Un subset finito $G := \left\langle g_1, ..., g_m\right\rangle \subset I$ si dice una \textbf{base di Groebner} per l'ideale $I$ se vale
+	\begin{center}
+		$\left\langle LT(g_1), ..., LT(g_m) \right\rangle = \left\langle LT(I) \right\rangle$
+	\end{center}
+\end{defn}
+
+\begin{prop}
+	Sia $\left\langle \O \right\rangle := \{0\}$ il subset vuoto e sia esso per convenzione una base di Groebner per l'ideale vuoto, allora per ogni ideale esiste (non necessariamente unica) una base di Groebner che è una base per tale ideale.
+\end{prop}
+
+\begin{defn}
+	Un polinomio $r \in \mathbb{K}[x]$ si dice \textbf{ridotto} rispetto ad un set $\left\lbrace g_1, ..., g_m \right\rbrace$, $g_i \in \mathbb{K}[x]$, se esso è esprimibile come una combinazione $\mathbb{K}$-lineare di termini nessuno dei quali è divisibile per nessuno dei $LT(g_1), ..., LT(g_m)$.
+\end{defn}
+
+\begin{defn}
+	Una base di Groebner $\left\lbrace g_1, ..., g_m \right\rbrace$ si dice \textbf{ridotta} se vale che:
+	\begin{enumerate}
+		\item $LC(g_i) = 1, i = 1, ..., m$,
+		\item $g_i$ è ridotto rispetto al set $\left\lbrace g_1, ...g_{i-1},g_{i+1}, ..., g_m \right\rbrace, i = 1, ..., m$
+	\end{enumerate}
+\end{defn}
+
+\begin{prop}
+	Per ogni ideale $I \subset \mathbb{K}[x]$ esiste un unica base di Groebner ridotta.
+\end{prop}
+
+\begin{prop}
+	Sia $p \in \mathbb{K}[x]$ e $G$ una base di Groebner per l'ideale $I \subset \mathbb{K}[x]$. Allora il resto della divisione di $p$ per il set $G$ è unico indipendentemente dall'ordine dei polinomi $g_i$.
+\end{prop}
+Risulta abbastanza chiaro che l'uso delle basi di Groebner per definire un ideale permette di risolvere il problema \ref{prob:mvda}; infatti un polinomio $p \in I$ se e solo se vale che il resto della divisione tra $p$ e la base di Groebner di $I$ è nullo.
+Si pone a questo punto il problema della determinazione di una base di Groebner dato un ideale I. A tal fine si può utilizzare l'algoritmo di Buchberger.
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	\KwData{un set $p_1, ..., p_s$ di polinomi $\in \mathbb{K}[x]$}
+	\KwResult{una base di Groebner $G$ per $\left\langle p_1, ..., p_s \right\rangle $}
+	$G = \left\lbrace p_1, ..., p_s \right\rbrace $\;
+	\Repeat{$G == $\^{G}}{
+		\^{G} = G\;
+		\ForEach{$p, q \in$ \^{G}, $p \neq q$}{
+			$x^{\alpha} = LM(p)$; $x^{\beta} = LM(q)$\;
+			$\gamma = (\gamma_1, ..., \gamma_n)$; $\gamma_i = max(\alpha_i, \beta_i)$\;
+			$s = \frac{x^{\gamma}}{LT(p)}p - \frac{x^{\gamma}}{LT(q)}q$\;
+			r := resto della divisione tra $s$ e il set \^{G}\;
+			\If{$r \neq 0$}{
+				$G = G \cup {r}$\;
+			}
+		}
+	}
+	
+	\caption{Buchberger's algoritmh}
+\end{algorithm}
+
+\medskip
+Si noti che il suddetto algoritmo non fornisce in genere una base di Groebner ridotta, infatti mantiene in G i polinomi $p_i$. 
+Si fa notare che lo scopo del polinomio $s$ è quello di permettere cancellazioni tra i leading terms dei polinomi $p$ e $q$, ci si riferisce ad esso come il polinomio-S, in simboli $S(p,q)$. Infine la condizione di terminazione è corretta perché è possibile dimostrare che un set di polinomi $G = \{g_1, ..., g_m\}$ è una base di Groebner per un certo ideale $I$ se e solo se per ogni $i,j = 1,..., m , \; i\neq j$ il resto della divisione di $S(g_i, g_j)$ per il set $G$ è nullo (Buchberger's criterion). Si fa presto a capire che siccome per ogni coppia (p,q) si deve effettuare una divisione con tutti i polinomi in \^{G} ed inoltre per ogni iterazione si aggiungerà un polinomio a tale set, l'algoritmo risulta pesante dal punto di vista computazionale. Infatti, si può dimostrare che l'algoritmo è EXPSPACE-complesso, cioè con tempo di calcolo e occupazione di memoria esponenziali. In genere però esso risulta applicabile sui computer moderni.
+Nel seguito della trattazione si utilizzerà il software Macaulay2 per il calcolo delle basi di Groebner di un dato ideale, il quale implementa proprio il suddetto algoritmo.
 
