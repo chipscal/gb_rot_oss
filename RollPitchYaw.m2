@@ -1,3 +1,6 @@
+needsPackage "NumericSolutions";
+needsPackage "MyFunction";
+
 R = frac(QQ [y0,z0,z1,x1,y1,Ct])[Cfi,Sfi,St, Cpsi, Spsi, x0, MonomialOrder => Lex];
 
 
@@ -27,4 +30,6 @@ A = W0 - M*W1;
 B = det(M) - 1;
 
 I = ideal(Z0,Z1,Z2,A,B);
-print dim I
+
+idealExtractor(I, "./Output/RollPitchYawIdeal.txt");
+compMatrExtractor(I, "./Output/RollPitchYawCompMatrices.txt");
