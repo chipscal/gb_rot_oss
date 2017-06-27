@@ -18,3 +18,4 @@ I = ideal{A,B,C}
 
 idealExtractor(I, "./Output/FreeRotIdeal.txt");
 compMatrExtractor(I, "./Output/FreeRotCompMatrices.txt");
+traceMatrExtractor(I, "./Output/FreeRotTrace.txt");

@@ -13,6 +13,7 @@ newPackage (
 export {
  "matrToFile",
  "compMatrExtractor",
+ "traceMatrExtractor",
  "idealExtractor"
 }
 
@@ -114,6 +115,36 @@ compMatrExtractor(Ideal, String) := (I, filename) -> (
 		myFile << newline << "-------------------------------------------------------------------------------------------------" << newline << newline << endl;
 	 
 	 );
+	 
+	 myFile << close;
+);
+
+
+traceMatrExtractor = method();
+traceMatrExtractor(Ideal, String) := (I, filename) -> (
+	 -- computes the companion matrix respect of all variables of the ideal I 
+	 -- and stores them into a file.
+	 
+	 -- inputs: the ideal I,
+	 --         the filename of the file where to write matrices
+	 
+	 
+	 -- output: void.
+	 --         
+	 
+	
+	 
+	 --open/create file
+	 myFile := openOut filename;
+	 
+	--calculate trace matrix of ideal I
+	traceMat := traceForm(I);
+	
+	myFile << "Trace form matrix: " << newline << endl;
+	matrToFile(traceMat, "trace", myFile);
+	myFile << newline << "-------------------------------------------------------------------------------------------------" << newline << newline << endl;
+	 
+	
 	 
 	 myFile << close;
 );

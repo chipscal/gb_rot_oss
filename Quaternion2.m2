@@ -1,7 +1,7 @@
 needsPackage "NumericSolutions";
 needsPackage "MyFunction";
 
-R = frac(QQ[x0,y0,z0,x1,y1,nn])[e1, e2, e3, z1, MonomialOrder => Lex];
+R = frac(QQ[x0,y0,z0,x1,y1,z1])[e1, e2, e3, nn, MonomialOrder => Lex];
 
 
 m11 = 2*(nn^2+e1^2) - 1;
@@ -28,8 +28,6 @@ B = nn^2 + e1^2 + e2^2 + e3^2 - 1;
 
 I = ideal(A,B);
 
-idealExtractor(I, "./Output/QuaternionIdeal.txt");
-compMatrExtractor(I, "./Output/QuaternionCompMatrices.txt");
-traceMatrExtractor(I, "./Output/QuaternionTrace.txt");
-
-
+-- idealExtractor(I, "./Output/QuaternionIdeal.txt");
+-- compMatrExtractor(I, "./Output/QuaternionCompMatrices.txt");
+-- traceMatrExtractor(I, "./Output/QuaternionTrace.txt");

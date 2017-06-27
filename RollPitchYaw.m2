@@ -33,3 +33,4 @@ I = ideal(Z0,Z1,Z2,A,B);
 
 idealExtractor(I, "./Output/RollPitchYawIdeal.txt");
 compMatrExtractor(I, "./Output/RollPitchYawCompMatrices.txt");
+traceMatrExtractor(I, "./Output/RollPitchYawTrace.txt");
