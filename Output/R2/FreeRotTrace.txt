@@ -1,0 +1,40 @@
+Trace form matrix: 
+
+trace_00 = 4;
+
+trace_01 = 4*ay1;
+
+trace_02 = 4*ax1*ay1;
+
+trace_03 = 4*ax1;
+
+trace_10 = 4*ay1;
+
+trace_11 = 4*ay1^2;
+
+trace_12 = 4*ax1*ay1^2;
+
+trace_13 = 4*ax1*ay1;
+
+trace_20 = 4*ax1*ay1;
+
+trace_21 = 4*ax1*ay1^2;
+
+trace_22 = 4*ax0^2*ay1^2+4*ay0^2*ay1^2+4*ax1^2*ay1^2-8*ax0*ay1^2*bx0+4*ay1^2*bx0^2-8*ay0*ay1^2*by0+4*ay1^2*by0^2;
+
+trace_23 = 4*ax0^2*ay1+4*ay0^2*ay1+4*ax1^2*ay1-8*ax0*ay1*bx0+4*ay1*bx0^2-8*ay0*ay1*by0+4*ay1*by0^2;
+
+trace_30 = 4*ax1;
+
+trace_31 = 4*ax1*ay1;
+
+trace_32 = 4*ax0^2*ay1+4*ay0^2*ay1+4*ax1^2*ay1-8*ax0*ay1*bx0+4*ay1*bx0^2-8*ay0*ay1*by0+4*ay1*by0^2;
+
+trace_33 = 4*ax0^2+4*ay0^2+4*ax1^2-8*ax0*bx0+4*bx0^2-8*ay0*by0+4*by0^2;
+
+trace = {{trace_00, trace_01, trace_02, trace_03}, {trace_10, trace_11, trace_12, trace_13}, {trace_20, trace_21, trace_22, trace_23}, {trace_30, trace_31, trace_32, trace_33}};
+
+
+-------------------------------------------------------------------------------------------------
+
+

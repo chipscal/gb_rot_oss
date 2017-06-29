@@ -1,0 +1,240 @@
+Companion matrix respect to: r11
+
+cpMatVar_r11_00 = (ax0*ax1+ay0*ay1-ax1*bx0-ay1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r11_01 = (ay0*ay1^2-ay1^2*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r11_02 = 0;
+
+cpMatVar_r11_03 = (-ax0^3-ax0*ay0^2+ax0*ax1^2+3*ax0^2*bx0+ay0^2*bx0-ax1^2*bx0-3*ax0*bx0^2+bx0^3+2*ax0*ay0*by0-2*ay0*bx0*by0-ax0*by0^2+bx0*by0^2)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r11_10 = (-ay0+by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r11_11 = (ax0*ax1-ay0*ay1-ax1*bx0+ay1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r11_12 = (-ax0^3-ax0*ay0^2+ax0*ax1^2+3*ax0^2*bx0+ay0^2*bx0-ax1^2*bx0-3*ax0*bx0^2+bx0^3+2*ax0*ay0*by0-2*ay0*bx0*by0-ax0*by0^2+bx0*by0^2)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r11_13 = 0;
+
+cpMatVar_r11_20 = 0;
+
+cpMatVar_r11_21 = (-ax0+bx0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r11_22 = (-ax0*ax1-ay0*ay1+ax1*bx0+ay1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r11_23 = (-ay0+by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r11_30 = (-ax0+bx0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r11_31 = 0;
+
+cpMatVar_r11_32 = (ay0*ay1^2-ay1^2*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r11_33 = (-ax0*ax1+ay0*ay1+ax1*bx0-ay1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r11 = {{cpMatVar_r11_00, cpMatVar_r11_01, cpMatVar_r11_02, cpMatVar_r11_03}, {cpMatVar_r11_10, cpMatVar_r11_11, cpMatVar_r11_12, cpMatVar_r11_13}, {cpMatVar_r11_20, cpMatVar_r11_21, cpMatVar_r11_22, cpMatVar_r11_23}, {cpMatVar_r11_30, cpMatVar_r11_31, cpMatVar_r11_32, cpMatVar_r11_33}};
+
+
+-------------------------------------------------------------------------------------------------
+
+
+Companion matrix respect to: r12
+
+cpMatVar_r12_00 = (-ay0*ax1+ax0*ay1-ay1*bx0+ax1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r12_01 = (ax0*ay1^2-ay1^2*bx0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r12_02 = 0;
+
+cpMatVar_r12_03 = (ax0^2*ay0+ay0^3-ay0*ax1^2-2*ax0*ay0*bx0+ay0*bx0^2-ax0^2*by0-3*ay0^2*by0+ax1^2*by0+2*ax0*bx0*by0-bx0^2*by0+3*ay0*by0^2-by0^3)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r12_10 = (-ax0+bx0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r12_11 = (-ay0*ax1-ax0*ay1+ay1*bx0+ax1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r12_12 = (ax0^2*ay0+ay0^3-ay0*ax1^2-2*ax0*ay0*bx0+ay0*bx0^2-ax0^2*by0-3*ay0^2*by0+ax1^2*by0+2*ax0*bx0*by0-bx0^2*by0+3*ay0*by0^2-by0^3)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r12_13 = 0;
+
+cpMatVar_r12_20 = 0;
+
+cpMatVar_r12_21 = (ay0-by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r12_22 = (ay0*ax1-ax0*ay1+ay1*bx0-ax1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r12_23 = (-ax0+bx0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r12_30 = (ay0-by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r12_31 = 0;
+
+cpMatVar_r12_32 = (ax0*ay1^2-ay1^2*bx0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r12_33 = (ay0*ax1+ax0*ay1-ay1*bx0-ax1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_r12 = {{cpMatVar_r12_00, cpMatVar_r12_01, cpMatVar_r12_02, cpMatVar_r12_03}, {cpMatVar_r12_10, cpMatVar_r12_11, cpMatVar_r12_12, cpMatVar_r12_13}, {cpMatVar_r12_20, cpMatVar_r12_21, cpMatVar_r12_22, cpMatVar_r12_23}, {cpMatVar_r12_30, cpMatVar_r12_31, cpMatVar_r12_32, cpMatVar_r12_33}};
+
+
+-------------------------------------------------------------------------------------------------
+
+
+Companion matrix respect to: tx
+
+cpMatVar_tx_00 = (ax0^3+ax0*ay0^2-ax0*ax1^2-ax0*ay1^2-2*ax0^2*bx0+ax1^2*bx0+ay1^2*bx0+ax0*bx0^2-2*ax0*ay0*by0+ax0*by0^2)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_tx_01 = (-ay0*ax1*ay1^2-ax0*ay1^3+ay1^3*bx0+ax1*ay1^2*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_tx_02 = 0;
+
+cpMatVar_tx_03 = (ax0^3*ax1+ax0*ay0^2*ax1-ax0*ax1^3-ax0^2*ay0*ay1-ay0^3*ay1+ay0*ax1^2*ay1-3*ax0^2*ax1*bx0-ay0^2*ax1*bx0+ax1^3*bx0+2*ax0*ay0*ay1*bx0+3*ax0*ax1*bx0^2-ay0*ay1*bx0^2-ax1*bx0^3-2*ax0*ay0*ax1*by0+ax0^2*ay1*by0+3*ay0^2*ay1*by0-ax1^2*ay1*by0+2*ay0*ax1*bx0*by0-2*ax0*ay1*bx0*by0+ay1*bx0^2*by0+ax0*ax1*by0^2-3*ay0*ay1*by0^2-ax1*bx0*by0^2+ay1*by0^3)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_tx_10 = (ay0*ax1+ax0*ay1-ay1*bx0-ax1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_tx_11 = (ax0^3+ax0*ay0^2-ax0*ax1^2+2*ay0*ax1*ay1+ax0*ay1^2-2*ax0^2*bx0+ax1^2*bx0-ay1^2*bx0+ax0*bx0^2-2*ax0*ay0*by0-2*ax1*ay1*by0+ax0*by0^2)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_tx_12 = (ax0^3*ax1+ax0*ay0^2*ax1-ax0*ax1^3-ax0^2*ay0*ay1-ay0^3*ay1+ay0*ax1^2*ay1-3*ax0^2*ax1*bx0-ay0^2*ax1*bx0+ax1^3*bx0+2*ax0*ay0*ay1*bx0+3*ax0*ax1*bx0^2-ay0*ay1*bx0^2-ax1*bx0^3-2*ax0*ay0*ax1*by0+ax0^2*ay1*by0+3*ay0^2*ay1*by0-ax1^2*ay1*by0+2*ay0*ax1*bx0*by0-2*ax0*ay1*bx0*by0+ay1*bx0^2*by0+ax0*ax1*by0^2-3*ay0*ay1*by0^2-ax1*bx0*by0^2+ay1*by0^3)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_tx_13 = 0;
+
+cpMatVar_tx_20 = 0;
+
+cpMatVar_tx_21 = (ax0*ax1-ay0*ay1-ax1*bx0+ay1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_tx_22 = (ax0^3+ax0*ay0^2+ax0*ax1^2+ax0*ay1^2-2*ax0^2*bx0-ax1^2*bx0-ay1^2*bx0+ax0*bx0^2-2*ax0*ay0*by0+ax0*by0^2)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_tx_23 = (ay0*ax1+ax0*ay1-ay1*bx0-ax1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_tx_30 = (ax0*ax1-ay0*ay1-ax1*bx0+ay1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_tx_31 = 0;
+
+cpMatVar_tx_32 = (-ay0*ax1*ay1^2-ax0*ay1^3+ay1^3*bx0+ax1*ay1^2*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_tx_33 = (ax0^3+ax0*ay0^2+ax0*ax1^2-2*ay0*ax1*ay1-ax0*ay1^2-2*ax0^2*bx0-ax1^2*bx0+ay1^2*bx0+ax0*bx0^2-2*ax0*ay0*by0+2*ax1*ay1*by0+ax0*by0^2)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_tx = {{cpMatVar_tx_00, cpMatVar_tx_01, cpMatVar_tx_02, cpMatVar_tx_03}, {cpMatVar_tx_10, cpMatVar_tx_11, cpMatVar_tx_12, cpMatVar_tx_13}, {cpMatVar_tx_20, cpMatVar_tx_21, cpMatVar_tx_22, cpMatVar_tx_23}, {cpMatVar_tx_30, cpMatVar_tx_31, cpMatVar_tx_32, cpMatVar_tx_33}};
+
+
+-------------------------------------------------------------------------------------------------
+
+
+Companion matrix respect to: ty
+
+cpMatVar_ty_00 = (ax0^2*ay0+ay0^3-ay0*ax1^2-ay0*ay1^2-2*ax0*ay0*bx0+ay0*bx0^2-2*ay0^2*by0+ax1^2*by0+ay1^2*by0+ay0*by0^2)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_ty_01 = (ax0*ax1*ay1^2-ay0*ay1^3-ax1*ay1^2*bx0+ay1^3*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_ty_02 = 0;
+
+cpMatVar_ty_03 = (ax0^2*ay0*ax1+ay0^3*ax1-ay0*ax1^3+ax0^3*ay1+ax0*ay0^2*ay1-ax0*ax1^2*ay1-2*ax0*ay0*ax1*bx0-3*ax0^2*ay1*bx0-ay0^2*ay1*bx0+ax1^2*ay1*bx0+ay0*ax1*bx0^2+3*ax0*ay1*bx0^2-ay1*bx0^3-ax0^2*ax1*by0-3*ay0^2*ax1*by0+ax1^3*by0-2*ax0*ay0*ay1*by0+2*ax0*ax1*bx0*by0+2*ay0*ay1*bx0*by0-ax1*bx0^2*by0+3*ay0*ax1*by0^2+ax0*ay1*by0^2-ay1*bx0*by0^2-ax1*by0^3)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_ty_10 = (-ax0*ax1+ay0*ay1+ax1*bx0-ay1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_ty_11 = (ax0^2*ay0+ay0^3-ay0*ax1^2-2*ax0*ax1*ay1+ay0*ay1^2-2*ax0*ay0*bx0+2*ax1*ay1*bx0+ay0*bx0^2-2*ay0^2*by0+ax1^2*by0-ay1^2*by0+ay0*by0^2)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_ty_12 = (ax0^2*ay0*ax1+ay0^3*ax1-ay0*ax1^3+ax0^3*ay1+ax0*ay0^2*ay1-ax0*ax1^2*ay1-2*ax0*ay0*ax1*bx0-3*ax0^2*ay1*bx0-ay0^2*ay1*bx0+ax1^2*ay1*bx0+ay0*ax1*bx0^2+3*ax0*ay1*bx0^2-ay1*bx0^3-ax0^2*ax1*by0-3*ay0^2*ax1*by0+ax1^3*by0-2*ax0*ay0*ay1*by0+2*ax0*ax1*bx0*by0+2*ay0*ay1*bx0*by0-ax1*bx0^2*by0+3*ay0*ax1*by0^2+ax0*ay1*by0^2-ay1*bx0*by0^2-ax1*by0^3)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_ty_13 = 0;
+
+cpMatVar_ty_20 = 0;
+
+cpMatVar_ty_21 = (ay0*ax1+ax0*ay1-ay1*bx0-ax1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_ty_22 = (ax0^2*ay0+ay0^3+ay0*ax1^2+ay0*ay1^2-2*ax0*ay0*bx0+ay0*bx0^2-2*ay0^2*by0-ax1^2*by0-ay1^2*by0+ay0*by0^2)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_ty_23 = (-ax0*ax1+ay0*ay1+ax1*bx0-ay1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_ty_30 = (ay0*ax1+ax0*ay1-ay1*bx0-ax1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_ty_31 = 0;
+
+cpMatVar_ty_32 = (ax0*ax1*ay1^2-ay0*ay1^3-ax1*ay1^2*bx0+ay1^3*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_ty_33 = (ax0^2*ay0+ay0^3+ay0*ax1^2+2*ax0*ax1*ay1-ay0*ay1^2-2*ax0*ay0*bx0-2*ax1*ay1*bx0+ay0*bx0^2-2*ay0^2*by0-ax1^2*by0+ay1^2*by0+ay0*by0^2)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2);
+
+cpMatVar_ty = {{cpMatVar_ty_00, cpMatVar_ty_01, cpMatVar_ty_02, cpMatVar_ty_03}, {cpMatVar_ty_10, cpMatVar_ty_11, cpMatVar_ty_12, cpMatVar_ty_13}, {cpMatVar_ty_20, cpMatVar_ty_21, cpMatVar_ty_22, cpMatVar_ty_23}, {cpMatVar_ty_30, cpMatVar_ty_31, cpMatVar_ty_32, cpMatVar_ty_33}};
+
+
+-------------------------------------------------------------------------------------------------
+
+
+Companion matrix respect to: by1
+
+cpMatVar_by1_00 = 0;
+
+cpMatVar_by1_01 = -ay1^2;
+
+cpMatVar_by1_02 = 0;
+
+cpMatVar_by1_03 = 0;
+
+cpMatVar_by1_10 = 1;
+
+cpMatVar_by1_11 = 2*ay1;
+
+cpMatVar_by1_12 = 0;
+
+cpMatVar_by1_13 = 0;
+
+cpMatVar_by1_20 = 0;
+
+cpMatVar_by1_21 = 0;
+
+cpMatVar_by1_22 = 2*ay1;
+
+cpMatVar_by1_23 = 1;
+
+cpMatVar_by1_30 = 0;
+
+cpMatVar_by1_31 = 0;
+
+cpMatVar_by1_32 = -ay1^2;
+
+cpMatVar_by1_33 = 0;
+
+cpMatVar_by1 = {{cpMatVar_by1_00, cpMatVar_by1_01, cpMatVar_by1_02, cpMatVar_by1_03}, {cpMatVar_by1_10, cpMatVar_by1_11, cpMatVar_by1_12, cpMatVar_by1_13}, {cpMatVar_by1_20, cpMatVar_by1_21, cpMatVar_by1_22, cpMatVar_by1_23}, {cpMatVar_by1_30, cpMatVar_by1_31, cpMatVar_by1_32, cpMatVar_by1_33}};
+
+
+-------------------------------------------------------------------------------------------------
+
+
+Companion matrix respect to: bx1
+
+cpMatVar_bx1_00 = 0;
+
+cpMatVar_bx1_01 = 0;
+
+cpMatVar_bx1_02 = 0;
+
+cpMatVar_bx1_03 = ax0^2+ay0^2-ax1^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2;
+
+cpMatVar_bx1_10 = 0;
+
+cpMatVar_bx1_11 = 0;
+
+cpMatVar_bx1_12 = ax0^2+ay0^2-ax1^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2;
+
+cpMatVar_bx1_13 = 0;
+
+cpMatVar_bx1_20 = 0;
+
+cpMatVar_bx1_21 = 1;
+
+cpMatVar_bx1_22 = 2*ax1;
+
+cpMatVar_bx1_23 = 0;
+
+cpMatVar_bx1_30 = 1;
+
+cpMatVar_bx1_31 = 0;
+
+cpMatVar_bx1_32 = 0;
+
+cpMatVar_bx1_33 = 2*ax1;
+
+cpMatVar_bx1 = {{cpMatVar_bx1_00, cpMatVar_bx1_01, cpMatVar_bx1_02, cpMatVar_bx1_03}, {cpMatVar_bx1_10, cpMatVar_bx1_11, cpMatVar_bx1_12, cpMatVar_bx1_13}, {cpMatVar_bx1_20, cpMatVar_bx1_21, cpMatVar_bx1_22, cpMatVar_bx1_23}, {cpMatVar_bx1_30, cpMatVar_bx1_31, cpMatVar_bx1_32, cpMatVar_bx1_33}};
+
+
+-------------------------------------------------------------------------------------------------
+
+

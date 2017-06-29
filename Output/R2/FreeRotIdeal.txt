@@ -1,0 +1,46 @@
+------------------ Ideal information ------------------
+Number of generators: 10
+Ideal dimension: 0
+Ideal vars: {r11, r12, tx, ty, by1, bx1}
+Ideal coefficient: frac(QQ[ax0, ay0, ax1, ay1, bx0, by0])
+
+
+Ideal generators: 
+
+
+q1 = -ax1*r11-ay1*r12-tx+ax0
+
+q2 = -ay1*r11+ax1*r12-ty+ay0
+
+q3 = -r11*bx1-r12*by1-tx+bx0
+
+q4 = -r11*by1+r12*bx1-ty+by0
+
+q5 = r11^2+r12^2-1
+
+q6 = 0
+
+q7 = 0
+
+q8 = r11^2+r12^2-1
+
+q9 = r11^2+r12^2-1
+
+q10 = by1^2-2*ay1*by1-bx1^2+2*ax1*bx1+ax0^2+ay0^2-ax1^2+ay1^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2
+
+------------------ Groebner base information ------------------
+Base size: 6
+Groebner base: 
+
+
+g1 = bx1^2-2*ax1*bx1-ax0^2-ay0^2+ax1^2+2*ax0*bx0-bx0^2+2*ay0*by0-by0^2
+
+g2 = by1^2-2*ay1*by1+ay1^2
+
+g3 = ty+((ax0*ax1-ay0*ay1-ax1*bx0+ay1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2))*by1+((-ay0*ax1-ax0*ay1+ay1*bx0+ax1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2))*bx1+(-ax0^2*ay0-ay0^3+ay0*ax1^2+ay0*ay1^2+2*ax0*ay0*bx0-ay0*bx0^2+2*ay0^2*by0-ax1^2*by0-ay1^2*by0-ay0*by0^2)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2)
+
+g4 = tx+((-ay0*ax1-ax0*ay1+ay1*bx0+ax1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2))*by1+((-ax0*ax1+ay0*ay1+ax1*bx0-ay1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2))*bx1+(-ax0^3-ax0*ay0^2+ax0*ax1^2+ax0*ay1^2+2*ax0^2*bx0-ax1^2*bx0-ay1^2*bx0-ax0*bx0^2+2*ax0*ay0*by0-ax0*by0^2)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2)
+
+g5 = r12+((ax0-bx0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2))*by1+((-ay0+by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2))*bx1+(ay0*ax1-ax0*ay1+ay1*bx0-ax1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2)
+
+g6 = r11+((ay0-by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2))*by1+((ax0-bx0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2))*bx1+(-ax0*ax1-ay0*ay1+ax1*bx0+ay1*by0)/(ax0^2+ay0^2-2*ax0*bx0+bx0^2-2*ay0*by0+by0^2)
