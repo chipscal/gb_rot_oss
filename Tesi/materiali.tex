@@ -1,5 +1,5 @@
-\chapter{Materiali e metodi}
-\label{chap:MatAndMethod}
+\chapter{Strumenti matematici}
+\label{chap:mat}
 
 \begin{minipage}{12cm}\textit{In questo capitolo verranno brevemente introdotti gli strumenti che verranno utilizzati in questo lavoro di tesi. Si introdurranno per prima gli strumenti di geometria algebrica quali: ideali, basi di Groebner, ecc. Successivamente verrà data qualche nozione sul controllo Sliding mode e gli osservatori.}
 \end{minipage}
@@ -216,4 +216,9 @@ Si pone a questo punto il problema della determinazione di una base di Groebner 
 Si noti che il suddetto algoritmo non fornisce in genere una base di Groebner ridotta, infatti mantiene in G i polinomi $p_i$. 
 Si fa notare che lo scopo del polinomio $s$ è quello di permettere cancellazioni tra i leading terms dei polinomi $p$ e $q$, ci si riferisce ad esso come il polinomio-S, in simboli $S(p,q)$. Infine la condizione di terminazione è corretta perché è possibile dimostrare che un set di polinomi $G = \{g_1, ..., g_m\}$ è una base di Groebner per un certo ideale $I$ se e solo se per ogni $i,j = 1,..., m , \; i\neq j$ il resto della divisione di $S(g_i, g_j)$ per il set $G$ è nullo (Buchberger's criterion). Si fa presto a capire che siccome per ogni coppia (p,q) si deve effettuare una divisione con tutti i polinomi in \^{G} ed inoltre per ogni iterazione si aggiungerà un polinomio a tale set, l'algoritmo risulta pesante dal punto di vista computazionale. Infatti, si può dimostrare che l'algoritmo è EXPSPACE-complesso, cioè con tempo di calcolo e occupazione di memoria esponenziali. In genere però esso risulta applicabile sui computer moderni.
 Nel seguito della trattazione si utilizzerà il software Macaulay2 per il calcolo delle basi di Groebner di un dato ideale, il quale implementa proprio il suddetto algoritmo.
+
+
+\section{Decomposizione SVD}
+\label{sec:SVD}
+
 

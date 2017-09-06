@@ -90,6 +90,7 @@ function[U, r, lrms] = Kabsch(P, Q, m)
 	C = Pdm*Q' ; 	
 %	C = P*Q' / N ;       % (for the non-weighted case)       
 	[V,S,W] = svd(C) ;   % singular value decomposition
+ 
 	I = eye(D) ;
 	if (det(V*W') < 0)   % more numerically stable than using (det(C) < 0)
 		I(D,D) = -1 ;
