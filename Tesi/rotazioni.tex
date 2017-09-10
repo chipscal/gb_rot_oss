@@ -1,18 +1,48 @@
 \chapter{Stima della matrice di trasformazione}
 \label{chap:stima}
 
-\begin{minipage}{12cm}\textit{blabla..}
+\begin{minipage}{12cm}\textit{In questo capitolo verrà trattato il problema della stima della matrice di trasformazione tra due set di coppie di punti. Tale problema, può essere ricondotto ad uno molto antico, noto come problema di Procrustes. Si studieranno due diversi approcci alla soluzione.}
 \end{minipage}
 
 \vspace*{1cm}
 
+Come già preannunciato, obbiettivo di questo capitolo è quello di riuscire ad individuare la matrice di trasformazione tra due set di punti. Tali set si suppongono avere la stessa "forma", cioè essere delle grandezze strettamente correlate: ad esempio possono essere campioni della stessa quantità misurati da differenti sensori; oppure essere le coordinate di punti dello spazio in istanti del tempo diversi. Nel seguito si definirà il problema e si studieranno due soluzioni differenti atte a trovare, in forma analitica, la trasformazione in esame.  
+
 %qua descrivo il problema...
+\section{Il problema: Superimposizione di Procrustes}
+\label{sec:problStima}
+Il problema in esame si configura come una versione semplificata di un antico problema detto \textbf{superimposizione di Procrustes}. Nell'antica mitologia greca Procrustes, o Damaste, era un brigante solito aggredire i viaggiatori per poi smembrarli in modo di riuscire disporre le membra su di un tavolo di ferro. 
+Per fortuna, il problema matematico in esame risulta meno cruento e può essere riassunto nel modo seguente: \textit{dati due corpi (N-dimensionali), attraverso solo operazioni di rotazione, traslazione e ridimensionamento, si deve riuscire a far combaciare il primo sul secondo in modo ottimo. L'ottimo viene valutato attraverso una quantità detta distanza di Procrustes.} Si dice che il primo viene super-imposto sul secondo; ovviamente qualora i due corpi abbiano la stessa forma la distanza di Procrustes sarà nulla. 
+Tale problema risulta molto studiato in ambiti bioinformatici per comparare strutture di proteine. 
+
+Nel resto del capitolo verrà però imposto un vincolo: \textit{i corpi posti a confronto non sono stati scalati.} Tale vincolo, permette di non dover considerare operazioni di ridimensionamento. Infatti, come già preannunciato nel capitolo \ref{chap:visualObs}, l'ambiente circostante si supporrà statico e quindi in nessun modo esso potrà essere ridimensionato.
+Inoltre, adotteremo una struttura specifica per i corpi in esame: essi si suppongono essere dei politopi, descritti quindi dai loro vertici. In sostanza questo ci permette di dover tener conto di soli insiemi di punti. 
+
+
 
 
 \section{Il metodo di Groebner}
 \label{sec:groeb}
+In questo paragrafo si presenta una metodologia di risoluzione del problema in esame mediante l'utilizzo degli strumenti di geometria algebrica. Si procederà prima allo studio del caso planare per poi estendere il risultato al caso spaziale.
 
+\subsection{Il caso planare}
+\label{sec:groeb:plan}
 
+\subsection{Il caso spaziale}
+\label{sec:groeb:spaz}
 
+%con groebner diretto non si riece a completare il calcolo
+
+%estendo 2d
+% porto centroidi su origine
+% individuo asse mozzu
+% rotazione su asse dei mozzi
+% rotazione 2d nel piano dei punti
+% rotazione totale come motliplicazione delle due matrici di rotazione risultanti.
 \section{Il metodo di Kabsch}
-\label{sec:kabsh}
+\label{sec:kabsch}
+
+Nel precedente paragrafo si è riusciti ad individuare una soluzione in forma chiusa per il problema in esame; tale soluzione faceva uso inoltre di un numero molto ridotto di punti omologhi per il calcolo. Questo ultimo fatto unito ad un possibile errore o rumore sui set di punti fa si che le prestazioni della stima non siano ottimali. In questo paragrafo si usa un approccio differente basato su tecniche di controllo ottimo.
+
+\subsection{Robustezza ai disturbi}
+\label{sec:kabsch:rumore}

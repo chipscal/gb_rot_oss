@@ -1,7 +1,7 @@
 \chapter{Strumenti matematici}
 \label{chap:mat}
 
-\begin{minipage}{12cm}\textit{In questo capitolo verranno brevemente introdotti gli strumenti che verranno utilizzati in questo lavoro di tesi. Si introdurranno per prima gli strumenti di geometria algebrica quali: ideali, basi di Groebner, ecc. Successivamente verrà data qualche nozione sul controllo Sliding mode e gli osservatori.}
+\begin{minipage}{12cm}\textit{In questo capitolo verranno brevemente introdotti gli strumenti che verranno utilizzati in questo lavoro di tesi. Si introdurranno per prima gli strumenti di geometria algebrica quali: ideali, basi di Groebner, teoria dell'eliminazione. Successivamente si procederà ad illustrare la decomposizione SVD.}
 \end{minipage}
 
 \vspace*{1cm}
@@ -218,7 +218,86 @@ Si fa notare che lo scopo del polinomio $s$ è quello di permettere cancellazion
 Nel seguito della trattazione si utilizzerà il software Macaulay2 per il calcolo delle basi di Groebner di un dato ideale, il quale implementa proprio il suddetto algoritmo.
 
 
-\section{Decomposizione SVD}
+% --------- elimination theory
+\subsubsection{Teoria dell'eliminazione}
+Durante gli studi algebrici sicuramente ci si può essere imbattuti in un noto algoritmo detto: \textbf{Eliminazione di Gauss}. Quest'ultimo permette, dato un sistema lineare di equazioni - rappresentabile attraverso una matrice, attraverso operazioni elementari su sopraddetta matrice (operazioni che non ne alterano il rango), di ottenere una rappresentazione, in ipotesi di rango riga pieno, detta (quasi-)triangolare superiore. In tal modo si ottiene un sistema di equazioni in cui le ultime equazioni non dipendono da un certo numero delle prime variabili. Selezionando un certo numero delle ultime equazioni, è possibile ottenere un sotto-sistema in cui le prime variabili non compaiono (sono state eliminate). 
+Tale approccio viene utilizzato per risolvere in maniera più semplice un sistema di equazioni, in ipotesi che possa essere fatto.
+
+Tale concetto può essere esteso al caso polinomiale, non lineare, multi-variabile.
+
+\begin{defn}
+	Un set di polinomi $p_1, ..., p_m$, $p_i \in \mathbb{K}[x]$, si dice linearmente dipendente se esistono $c_1, ... c_m$ costanti non tutte nulle tale che $c_1p_1 + c_2p_2 + \, ... \, + c_mp_m = 0$. Altrimenti si dice \textbf{linearmente indipendente}.
+	
+	Un set di polinomi $p_1, ..., p_m$, $p_i \in \mathbb{K}[x]$, si dice algebricamente dipendente se esiste $q \in \mathbb{K}[y_1, \, ... \, , y_m]$ polinomio non nullo, tale che  $q(p_1, \, ..\, p_m) = 0 \in \mathbb{K}[x]$ (è il polinomio nullo). Altrimenti si dice \textbf{algebricamente indipendente}.
+\end{defn}
+
+Dato un ordinamento lessicografico $x_1 \ge_{Lex} x_2 \ge_{Lex} ... \ge_{Lex} x_n$ può essere possibile eliminare le prime $n-1$ variabili. Si dice infatti che tale ordine \textbf{elimina} $x_1, \, ... \, , x_{n-1}$.
+
+\begin{defn}
+	Dato un ordinamento lessicografico $x_1 \ge_{Lex} x_2 \ge_{Lex} ... \ge_{Lex} x_n$ e un ideale $I \subset \mathbb{K}[x]$ allora l'ideale
+	\begin{center}
+		$I_l = I \cap \mathbb{K}[x_{l+1}, \, ... \, x_{n}]$
+	\end{center}
+	si dice l'ideale di eliminazione di ordine $l$.
+\end{defn} 
+L'ideale di eliminazione di ordine $l$ può essere visto come l'insieme di tutte le conseguenze di un ideale nelle quali le prime $l$ variabili non compaiono.
+
+Si può introdurre infine il teorema generale di eliminazione.
+\begin{teor}
+	\label{teo:elimination}
+	Sia dato un ideale $I \subset \mathbb{K}[x_a, x_b]$ con $x_a \in \mathbb{R}^n_a, x_b \in \mathbb{R}^n_b$, $ n_a, n_b > 0$, $n = n_a + n_b$, e un ordinamento lessicografico $x_a \ge_{Lex} x_b$. Inoltre sia $G$ una base di Groebner ridotta per l'ideale $I$, calcolata in accordo a tale ordinamento. Allora vale che una base di Groebner per l'ideale di eliminazione di ordine $n_a$ è 
+	\begin{center}
+		$G_{n_a} = G \cap \mathbb{K}[x_b]$.
+	\end{center}
+\end{teor}
+
+Mediante l'utilizzo delle basi di Groebner e il precedente teorema è possibile quindi estendere il concetto di eliminazione, per applicarlo a sistemi di equazioni omogenei multi-variabile polinomiali non lineari. In modo di ottenere delle conseguenze, sistemi omogenei di dimensione ridotta dello stesso tipo, che non contengano alcune variabili. Tale strumento può essere utilizzato per ottenere soluzioni analitiche ai problemi studiati. 
+
+\section{Decomposizione ai valori singolari}
 \label{sec:SVD}
 
+In algebra lineare, la decomposizione ai valori singolari, detta anche SVD (dall'acronimo inglese Singular Value Decomposition), è una particolare fattorizzazione di una matrice basata sull'uso di autovalori e autovettori. 
 
+\begin{defn}
+	Data una matrice $M \in \mathbb{C}^{m \times n}$, si definisce decomposizione ai valori singolari o SVD la seguente decomposizione:
+	\begin{center}
+		$M = U \Sigma V^*$
+	\end{center}
+	dove $U$ è una matrice unitaria di dimensioni  $m\times m$, $\Sigma$ è una matrice diagonale rettangolare di dimensioni $m\times n$ e $V^*$ è la trasposta coniugata di una matrice unitaria $V$ di dimensioni $n\times n$.
+	Si definiscono inoltre:
+	\begin{enumerate}
+		\item gli elementi di $\Sigma$ valori singolari della matrice $M$,
+		\item le colonne di $U$ vettori singolari sinistri della matrice $M$,
+		\item le righe di $V^*$ covettori singolari destri  della matrice $M$.		
+	\end{enumerate}
+\end{defn}
+
+\begin{prop}
+	Data una decomposizione SVD valgono le seguenti proprietà:
+	\begin{enumerate}
+		\item se $ m \le n$, allora $\Sigma = [\Sigma_0 \, \, 0]$, dove $\Sigma_0 = diag \{\sigma_1, ..., \sigma_m \}, \sigma_i \in \mathbb{R}, \sigma_i \ge 0$,
+		\item se $ m > n$, allora $\Sigma = [\Sigma_0^T \, \, 0^T]^T$, dove $\Sigma_0 = diag \{\sigma_1, ..., \sigma_n \}, \sigma_i \in \mathbb{R}, \sigma_i \ge 0$,	 
+		\item i valori singolari $\sigma_i$ non nulli di $M$ sono le radici quadrate degli autovalori della matrice $MM^*$ e $M^*M$,
+		\item i vettori singolari di sinistra di $M$ sono gli autovettori di $MM^{*}$,
+		\item i covettori singolari di destra di $M$ sono gli autovettori di $M^{*}M$ trasposti.
+	\end{enumerate}
+\end{prop}
+
+Per il calcolo della decomposizione SVD sebbene è possibile procedere usando la definizione data, questo è sconsigliato perché inefficiente. Negli ultimi anni sono stati sviluppati diversi algoritmi atti allo scopo. Nello specifico si cita l'algoritmo Golub/Kahan utilizzato nelle recenti librerie matematiche come LAPACK, BLAS e CUBLAS.
+
+In particolare si fa notare che questi algoritmi sono particolarmente efficienti quando la matrice da decomporre è quadrata.
+
+La fattorizzazione SVD ha numerose applicazioni pratiche, infatti:
+\begin{enumerate}
+	\item il rango di una matrice è pari al numero di valori singolari maggiori di zero nella sua decomposizione SVD.
+	\item può essere usata per il calcolo della matrice pseudo-inversa destra (o sinistra). Infatti sia $M \in \mathbb{C}^{m \times n}, rank(M) = m$ allora la sua decomposizione sarà $M = U [ \Sigma_0 \,\, 0 ] V^*, \Sigma_0 > 0, UU^* = I, VV^* = I$, allora una pseudo inversa destra per $M$ può essere calcolata come:
+	\begin{center}
+		$M^{R} = V 
+		\begin{bmatrix}
+			\Sigma_0^{-1} \\
+			Z
+		\end{bmatrix} U^*$
+	\end{center} 
+	dove $Z$ è una qualsiasi matrice che può essere anche nulla e $\Sigma_0^{-1}$ è sempre diagonale e cui elementi saranno del tipo $1/\sigma_i$.
+	\item come vedremo nel paragrafo \ref{sec:kabsch} è particolarmente utile per risolvere problemi ai minimi quadratici.
+\end{enumerate}
