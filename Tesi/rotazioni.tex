@@ -42,7 +42,99 @@ In questo paragrafo si presenta una metodologia di risoluzione del problema in e
 \section{Il metodo di Kabsch}
 \label{sec:kabsch}
 
-Nel precedente paragrafo si è riusciti ad individuare una soluzione in forma chiusa per il problema in esame; tale soluzione faceva uso inoltre di un numero molto ridotto di punti omologhi per il calcolo. Questo ultimo fatto unito ad un possibile errore o rumore sui set di punti fa si che le prestazioni della stima non siano ottimali. In questo paragrafo si usa un approccio differente basato su tecniche di controllo ottimo.
+Nel precedente paragrafo si è riusciti ad individuare una soluzione in forma chiusa per il problema in esame; tale soluzione faceva uso di un numero molto ridotto di punti omologhi per il calcolo ma un possibile errore o rumore sui set faceva si che le prestazioni della stima degenerassero.
 
+Si presenta ora una soluzione in grado di individuare la trasformazione ottima tra i due set di punti, più robusta al rumore.
+
+Questo metodo è stato presentato per la prima volta in \cite{bib1} ad opera di W. Kabsch, in una prima formulazione si faceva uso del concetto di moltiplicatori di Lagrange, i quali avevano un impatto prestazionale abbastanza elevato. In questa recente formulazione invece si utilizza la decomposizione SVD, strumento il cui calcolo negli ultimi anni è diventato molto efficiente.
+
+La trasformazione che vogliamo individuare è composta, ovviamente, da una rotazione e una traslazione. Conviene iniziare con l'individuazione della prima, ragionando in modo analogo al precedente paragrafo, si comincia con il calcolo dei centroidi. Per comodità si riporta la formula per il calcolo del centroide di un set di punti:
+\begin{equation}
+	\label{rot:eq:cent}
+	a_c = \frac{1}{N}\sum_{i = 1}^{N}a_i
+\end{equation}
+Si procede poi traslando i set di punti facendo si che i centroidi coincidano con l'origine:
+\begin{equation}
+\label{rot:eq:redef}
+a_i^{'} = a_i - a_c, \, \, 
+b_i^{'} = b_i - b_c
+\end{equation}
+
+Il problema ora può essere formulato come un problema di controllo ottimo: \textit{trovare la matrice ortonormale $R$ tale che la distanza di Procrustes tra i due set sia minima.} Grazie al fatto che i centroidi dei due set coincidono, tale distanza, ridefinendo come $x_i = a_i^{'}, y_i = b_i^{'}, x_i, y_i \in \mathbb{R}^d$ per comodità, può essere calcolata semplicemente come:
+\begin{equation}
+	\label{rot:eq:dist}
+	d(x, y) =  \frac{1}{N}\sum_{i = 1}^{N} \| R x_i - y_i \|^2
+\end{equation}
+Si fissa quindi l'indice di costo $J = d(x, y)$. 
+Si fa notare che imporre la sola ortonormalità della matrice $R$ non assicura che essa sia una matrice di rotazione propria. Infatti si dovrà fare in modo che il suo determinante sia pari a 1. In caso contrario (pari a -1) essa rappresenterebbe una rotazione impropria, cioè una componente dei punti risulterebbe "specchiata". 
+Si possono rappresentare i set di punti attraverso le matrici:
+\begin{equation}
+	X = [x_1 \, x_2 \, ... \, x_N], Y = [y_1 \, y_2 \, ... \, y_N], X, Y \in \mathbb{R}^{d \times N},
+\end{equation}
+e sia $X^{'} = RX, \, \, X^{'} = [x_1^{'} \, x_2^{'} \, ... \, x_N^{'}]$ la matrice dei punti ruotati.
+
+Possiamo allora scrivere che:
+\begin{equation}
+	N J = \sum_{i = 1}^{N} \| x_i^{'} - y_i \|^2 = Tr[(X^{'} - Y)^{T}(X^{'} - Y)]
+\end{equation}
+dove si indica con $Tr(A)$ l'operatore traccia della matrice $A$.
+Grazie alla linearità dell'operatore traccia vale che:
+\begin{equation}
+Tr[(X^{'} - Y)^{T}(X^{'} - Y)] = Tr(X^{'T}X^{'}) + Tr(Y^{T}Y) - 2Tr(Y^{T}X^{'})
+\end{equation}
+Inoltre vale l'identità:
+\begin{equation}
+\label{rot:eq:mod}
+Tr(X^{'T}X^{'}) + Tr(Y^{T}Y) = \frac{1}{N}\sum_{i = 1}^{N} \| x_i^{'} \| ^ 2 + \| y_i \| ^ 2
+\end{equation}
+In seguito alla (\ref{rot:eq:redef}) i punti di entrambi i set sono dei vettori centrati nell'origine. La rotazione di un vettore non può in nessun modo alterarne il suo modulo. Si può affermare allora che la quantità (\ref{rot:eq:mod}) è costante e può essere non considerata nella minimizzazione dell'indice. Pertanto, per minimizzare il suddetto indice, basterà massimizzare la quantità $Tr(Y^{T}X^{'}) = Tr(Y^{T}RX) = Tr((XY^{T})R)$.
+Si fa notare che la matrice $ C = XY^{T}, \, C \in \mathbb{R}^{d \times d}$ è la matrice di cross correlazione tra i due set.
+
+Si usa ora la decomposizione SVD della matrice $C = VSW^T$, si ha che $V, S, W^T \in \mathbb{R}^{d \times d}$ poiché $C$ è quadrata. La matrice $S$ è diagonale e i suoi elementi sono i valori singolari della matrice $C$ in ordine decrescente.
+Dato che per l'operatore traccia vale che $Tr(AB) = Tr(BA)$, indicando con $A = V$ e $B = SW^TR$ è possibile scrivere:
+\begin{equation}
+	Tr(Y^{T}X^{'}) = Tr(VSW^TR) = Tr(SW^TRV) = \sum_{i = 1}^{d} s_iw_i^TRv_i
+\end{equation}
+La matrice $T = W^TRV$ è il prodotto di matrici ortonormali, sarà anch'essa ortonormale, questo vuol dire che i suoi elementi non potranno avere modulo maggiore di 1. Pertanto indicando con $T_{ii} = w_i^TRv_i$ gli elementi sulla diagonale di $T$, vale che
+\begin{equation}
+	Tr(Y^{T}X^{'}) = \sum_{i = 1}^{d} s_iT_{ii} \leq \sum_{i = 1}^{d} s_i
+\end{equation}
+ pertanto al massimo il valore della quantità $Tr(Y^{T}X^{'})$ è pari alla somma dei valori singolari $s_i$. Si deve fare in modo quindi che la matrice $T$ sia una matrice identità.
+ Grazie alla proprietà di $V$ e $W^T$ di essere ortonormali, $VV^T = I, W^TW = I$, basterà scegliere:
+ \begin{equation}
+ 	R = WV^T
+ \end{equation}
+Resta da risolvere un problema, cioè che in generale $det(R) = \pm 1$, il caso negativo va evitato.
+Per fare ciò possiamo aggiungere il vincolo che $det(R) = 1$ al problema, ripercorrendo quanto fatto e notando che $s_1 \ge s_2 \ge \, ... \, \ge s_d$ e che
+\begin{equation}
+Tr(Y^{T}X^{'}) = \sum_{i = 1}^{d} s_iT_{ii} 
+\end{equation}
+possiamo individuare il massimo per questa quantità, rispettando il vincolo, con la scelta $T_{11} = T_{22} = \, ... \, = T_{d-1d-1} = 1, T_{dd} = -1$. Infatti, data la richiesta di ortonormalità deve valere che i $T_{ii}$ devono essere in modulo pari a 1, quindi quest'ultima è la scelta migliore possibile dato che si sottrae il valore singolare più piccolo. Basterà dunque in caso di determinante negativo, cambiare di segno all'ultimo vettore singolare destro di $W$ (l'ultima colonna della matrice $W$). Possiamo generalizzare i due casi cosi facendo:
+\begin{equation}
+	d = sign(det(WV^T)),
+\end{equation}
+\begin{equation}
+	R = W
+	\begin{bmatrix}
+	1 \,\, 0 \,\, \cdots \,\, 0\\
+	0 \,\, 1 \,\, \cdots \,\, 0\\
+	\vdots\\
+	0 \,\, \cdots \,\, 1 \,\, 0\\
+	0 \,\, \cdots \,\, 0 \,\, d\\
+	\end{bmatrix}V^T
+\end{equation}
+
+Trovata la matrice di rotazione ottima, relativa ai due set, si può procedere ad individuare il vettore di traslazione relativo tra i due set. Si procede in maniera del tutto analoga a quanto fatto nel paragrafo \ref{sec:groeb:spaz} e per comodità si riporta qui la formula:
+\begin{equation}
+	t = b_c - Ra_c, t \in \mathbb{R}^d
+\end{equation}
+dove $b_c$ e $a_c$ sono i centroidi precedentemente calcolati.
 \subsection{Robustezza ai disturbi}
 \label{sec:kabsch:rumore}
+La soluzione appena ottenuta, come preannunciato, oltre che ottima, risulta resistente a disturbi sulla misura. Infatti, si supponga il disturbo "bianco", cioè con valore atteso pari a 0 e il disturbo delle singole componenti indipendente dalle altre.
+
+In prima istanza si può notare che il calcolo dei centroidi risulta corretto a patto di utilizzare un numero "abbastanza" grande di misure. Infatti, considerando $\tilde{x_i}$ la i-esima misura disturbata, si ha che
+\begin{equation}
+	x_c = \frac{1}{N}\sum_{i = 1}^{N} \tilde{x_i} = \frac{1}{N}\sum_{i = 1}^{N} x_i + e_i \longrightarrow \hat{x} + E[e] = \hat{x}
+\end{equation}
+dove con $E[e]$ si indica il valore atteso del disturbo. Dove nella precedente relazione la probabilità di convergenza ri al crescere delle misure disponibili, grazie alla legge dei grandi numeri: 
