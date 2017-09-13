@@ -28,14 +28,96 @@ In questo paragrafo si presenta una metodologia di risoluzione del problema in e
 \subsection{Il caso planare}
 \label{sec:groeb:plan}
 
+
+
 \subsection{Il caso spaziale}
 \label{sec:groeb:spaz}
 
 %con groebner diretto non si riece a completare il calcolo
+Forti della metodologia utilizzata per il caso planare, si è cercato in prima istanza di riprodurla per il caso spaziale. Analogamente a quanto fatto quindi, si è dovuto fissare l'ideale di partenza. 
+
+La prima scelta da effettuare è relativa alla rappresentazione da usare per la matrice di rotazione: si può utilizzare una rappresentazione mediante matrice ortonormale (come fatto nel caso planare), oppure una rappresentazione strutturata. In alcune rappresentazioni, come in forma ortonormale i parametri da stimare sono più numerosi rispetto che con altre, ma ad un maggior numero di parametri corrisponde un aumento del numero dei vincoli. 
+Si è scelto di provare con tre differenti rappresentazioni quali forma ortonormale e quaternioni.
+
+Siano: $w_1, w_1^{'}, w_2, w_2^{'}, w_3, w_3^{'} \in \mathbb{R}^3$ rispettivamente i punti omologhi prima e dopo la rotazione per i tre punti considerati, i quali si suppongono noti. Siano $t \in \mathbb{R}^3$ il vettore di traslazione da stimare e $R \in \mathbb{R}^{3 \times 3}$ la matrice di rotazione da stimare. Per ciascuna rappresentazione si può utilizzare il seguente ideale:
+
+\begin{enumerate}
+	\item \textbf{Rappresentazione ortonormale}
+	 \begin{center}
+	 	$M = 
+	 	\begin{bmatrix}
+	 		r_{11} \, r_{12} \, r_{13} \\
+	 		r_{21} \, r_{22} \, r_{23} \\
+	 		r_{31} \, r_{32} \, r_{33} 	 	
+	 	\end{bmatrix}$\\ \vspace{10pt}
+	 	$w_1 - Mw_1^{'}, w_2 - Mw_2^{'}, w_3 - Mw_3^{'}$ \\
+	 	$R^{T}R - I$ \\
+	 	$det(R) - 1$	 	
+	 \end{center}
+	\item \textbf{Rappresentazione quaternioni}  
+	\begin{center}
+		\nonumber $M = 
+		\begin{bmatrix}
+			2(n^2+e_1^2) - 1 \,\,\, 2(e_1e_2 - ne_3) \,\,\, 2(e_1e_3 + ne_2) \\
+			2(e_1e_2+n*e_3) \,\,\, 2(n^2+e_2^2) - 1 \,\,\, 2(e_2e_3 - ne_1) \\
+			2(e_1e_3-ne_2) \,\,\, 2(e_2e_3+ne_1) \,\,\, 2(n^2+e_3^2) - 1	 	
+		\end{bmatrix}$\\ \vspace{10pt}
+		$w_1 -  Mw_1^{'}, w_2 - Mw_2^{'}, w_3 - Mw_3^{'}$ \\
+		$e_1^2 + e_2^2 + e_3^2 + w^2 - 1 $
+	\end{center}
+\end{enumerate}
+
+Purtroppo in tutti e tre i casi riportati il software Macaulay non è stato in grado di portare a termine il calcolo in tempo utile. Infatti, si ricorda che il calcolo di una base di Groebner è un problema EXPSPACE-completo. 
 
 %estendo 2d
+Si è ritenuto allora che fosse più istruttivo un cambio di approccio.
+\begin{pro}
+	data la soluzione del problema planare, è possibile estenderla al caso spaziale?
+\end{pro}
+
+In effetti, attraverso qualche ragionamento di natura geometrica, è stata possibile tale estensione. Di seguito si descrive l'approccio usato.
+
 % porto centroidi su origine
-% individuo asse mozzu
+\begin{defn}
+	Si consideri un set di punti $\left\lbrace w_1, w_2, ..., w_N \right\rbrace$, si definisce \textbf{punto centroide} il punto centrale del set, calcolato come media puntuale dei punti.
+	\begin{equation}
+		w_c = \frac{1}{N}\sum_{i = 1}^{N} w_i
+	\end{equation}
+\end{defn}
+
+Occorre considerare almeno tre coppie di punti omologhi $(w_i, w_i^{'})$ (ciascuna coppia è costituita dal i-esimo punto prima e dopo la rotazione). Si costruiscano allora due set di punti $W = \left\lbrace w_1, w_2, w_3 \right\rbrace$ e $W = \left\lbrace w_1^{'}, w_2^{'}, w_3^{'} \right\rbrace$
+
+Per ciascuno dei due set si calcoli il suo punto centroide $w_c$ e $w_c^{'}$ rispettivamente.
+
+In prima istanza occorre traslare i due set di punti in modo che il punto centroide coincida con l'origine. Per fare ciò possiamo semplicemente sottrarre il punto centroide ai punti del relativo set.
+\begin{equation}
+p_i = w_i - w_c, \, \, 
+p_i^{'} = w_i - w_c^{'}
+\end{equation}
+dove per comodità di notazione si sono definiti con la lettera "p" i punti al netto di tale operazione.
+
+% individuo asse mozzi
+\begin{defn}
+	Sia considerata una trasformazione (rotazione e traslazione) di un set di punti, si definisce \textbf{asse dei mozzi}, l'asse i cui punti, durante la trasformazione, subiscono una sola traslazione lungo lo stesso. 
+\end{defn}
+
+\begin{obs}
+	\label{rot:gb:mozzi}
+	In caso di una sola rotazione lungo un asse passante per l'origine l'asse dei mozzi coincide con l'asse di rotazione stesso.
+	
+	Inoltre se si considerano tre coppie di punti omologhi, l'asse dei mozzi può essere calcolato come l'intersezione dei due piani definiti dai tre punti appartenenti a tali coppie rispettivamente prima e dopo la rotazione.
+\end{obs}
+
+Grazie al fatto che abbiamo traslato i punti in modo tale di far coincidere i centroidi nell'origine, vale l'osservazione \ref{rot:gb:mozzi}.
+
+Possiamo calcolare pertanto l'asse dei mozzi come l'intersezione dei piani definiti dai set $P$ e $P^{'}$. Nella figura \ref{rot:gb:imgMozzi} si può evincere più facilmente quanto detto.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=420pt]{imgs/AsseMozzi.jpg}
+	\caption{Calcolo dell'asse dei mozzi attraverso intersezione dei piani omologhi}
+	\label{rot:gb:imgMozzi}
+\end{figure} 
+
 % rotazione su asse dei mozzi
 % rotazione 2d nel piano dei punti
 % rotazione totale come motliplicazione delle due matrici di rotazione risultanti.
