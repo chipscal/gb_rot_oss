@@ -37,32 +37,32 @@ In questo paragrafo si presenta una metodologia di risoluzione del problema in e
 Forti della metodologia utilizzata per il caso planare, si è cercato in prima istanza di riprodurla per il caso spaziale. Analogamente a quanto fatto quindi, si è dovuto fissare l'ideale di partenza. 
 
 La prima scelta da effettuare è relativa alla rappresentazione da usare per la matrice di rotazione: si può utilizzare una rappresentazione mediante matrice ortonormale (come fatto nel caso planare), oppure una rappresentazione strutturata. In alcune rappresentazioni, come in forma ortonormale i parametri da stimare sono più numerosi rispetto che con altre, ma ad un maggior numero di parametri corrisponde un aumento del numero dei vincoli. 
-Si è scelto di provare con tre differenti rappresentazioni quali forma ortonormale e quaternioni.
+Si è provato con differenti rappresentazioni quali forma ortonormale e quaternioni.
 
 Siano: $w_1, w_1^{'}, w_2, w_2^{'}, w_3, w_3^{'} \in \mathbb{R}^3$ rispettivamente i punti omologhi prima e dopo la rotazione per i tre punti considerati, i quali si suppongono noti. Siano $t \in \mathbb{R}^3$ il vettore di traslazione da stimare e $R \in \mathbb{R}^{3 \times 3}$ la matrice di rotazione da stimare. Per ciascuna rappresentazione si può utilizzare il seguente ideale:
 
 \begin{enumerate}
 	\item \textbf{Rappresentazione ortonormale}
 	 \begin{center}
-	 	$M = 
+	 	$R = 
 	 	\begin{bmatrix}
 	 		r_{11} \, r_{12} \, r_{13} \\
 	 		r_{21} \, r_{22} \, r_{23} \\
 	 		r_{31} \, r_{32} \, r_{33} 	 	
-	 	\end{bmatrix}$\\ \vspace{10pt}
-	 	$w_1 - Mw_1^{'}, w_2 - Mw_2^{'}, w_3 - Mw_3^{'}$ \\
-	 	$R^{T}R - I$ \\
+	 	\end{bmatrix},$\\ \vspace{10pt}
+	 	$w_1 - Rw_1^{'}, w_2 - Rw_2^{'}, w_3 - Rw_3^{'},$ \\
+	 	$R^{T}R - I,$ \\
 	 	$det(R) - 1$	 	
 	 \end{center}
 	\item \textbf{Rappresentazione quaternioni}  
 	\begin{center}
-		\nonumber $M = 
+		\nonumber $R = 
 		\begin{bmatrix}
 			2(n^2+e_1^2) - 1 \,\,\, 2(e_1e_2 - ne_3) \,\,\, 2(e_1e_3 + ne_2) \\
-			2(e_1e_2+n*e_3) \,\,\, 2(n^2+e_2^2) - 1 \,\,\, 2(e_2e_3 - ne_1) \\
+			2(e_1e_2+ne_3) \,\,\, 2(n^2+e_2^2) - 1 \,\,\, 2(e_2e_3 - ne_1) \\
 			2(e_1e_3-ne_2) \,\,\, 2(e_2e_3+ne_1) \,\,\, 2(n^2+e_3^2) - 1	 	
-		\end{bmatrix}$\\ \vspace{10pt}
-		$w_1 -  Mw_1^{'}, w_2 - Mw_2^{'}, w_3 - Mw_3^{'}$ \\
+		\end{bmatrix},$\\ \vspace{10pt}
+		$w_1 -  Rw_1^{'}, w_2 - Rw_2^{'}, w_3 - Rw_3^{'},$ \\
 		$e_1^2 + e_2^2 + e_3^2 + w^2 - 1 $
 	\end{center}
 \end{enumerate}
@@ -85,7 +85,7 @@ In effetti, attraverso qualche ragionamento di natura geometrica, è stata possi
 	\end{equation}
 \end{defn}
 
-Occorre considerare almeno tre coppie di punti omologhi $(w_i, w_i^{'})$ (ciascuna coppia è costituita dal i-esimo punto prima e dopo la rotazione). Si costruiscano allora due set di punti $W = \left\lbrace w_1, w_2, w_3 \right\rbrace$ e $W = \left\lbrace w_1^{'}, w_2^{'}, w_3^{'} \right\rbrace$
+Occorre considerare almeno tre coppie di punti omologhi $(w_i, w_i^{'})$ (ciascuna coppia è costituita dal i-esimo punto prima e dopo la rotazione). Si costruiscano allora due set di punti $W = \left\lbrace w_1, w_2, w_3 \right\rbrace$ e $W^{'} = \left\lbrace w_1^{'}, w_2^{'}, w_3^{'} \right\rbrace$
 
 Per ciascuno dei due set si calcoli il suo punto centroide $w_c$ e $w_c^{'}$ rispettivamente.
 
@@ -105,12 +105,12 @@ dove per comodità di notazione si sono definiti con la lettera "p" i punti al n
 	\label{rot:gb:mozzi}
 	In caso di una sola rotazione lungo un asse passante per l'origine l'asse dei mozzi coincide con l'asse di rotazione stesso.
 	
-	Inoltre se si considerano tre coppie di punti omologhi, l'asse dei mozzi può essere calcolato come l'intersezione dei due piani definiti dai tre punti appartenenti a tali coppie rispettivamente prima e dopo la rotazione.
+	L'asse dei mozzi può essere calcolato come l'intersezione di due piani omologhi, cioè dei piani definiti dagli stessi tre punti prima e dopo la rotazione rispettivamente.
 \end{obs}
 
-Grazie al fatto che abbiamo traslato i punti in modo tale di far coincidere i centroidi nell'origine, vale l'osservazione \ref{rot:gb:mozzi}.
+Grazie alla traslazione effettuata, si che i centroidi coincidano con l'origine, vale l'osservazione \ref{rot:gb:mozzi}.
 
-Possiamo calcolare pertanto l'asse dei mozzi come l'intersezione dei piani definiti dai set $P$ e $P^{'}$. Nella figura \ref{rot:gb:imgMozzi} si può evincere più facilmente quanto detto.
+Possiamo calcolare pertanto l'asse dei mozzi come l'intersezione dei piani definiti dai set $P$ e $P^{'}$. Nella figura \ref{rot:gb:imgMozzi} si può evincere più facilmente quanto detto. 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=420pt]{imgs/AsseMozzi.jpg}
@@ -118,9 +118,51 @@ Possiamo calcolare pertanto l'asse dei mozzi come l'intersezione dei piani defin
 	\label{rot:gb:imgMozzi}
 \end{figure} 
 
+Si possono notare due triangoli i cui vertici sono i punti omologhi considerati che rappresentano i sopra detti piani omologhi. Dalla loro intersezione si definisce un asse (in arancione) passante per l'origine. Quest'ultimo è proprio l'asse dei mozzi cercato, cioè l'insieme dei punti, appartenenti ad entrambi i piani, che nella rotazione che porta alla sovrapposizione dei piani stessi rimane invariato.
 % rotazione su asse dei mozzi
+Individuato l'asse dei mozzi, si può effettuare una prima rotazione, intorno a tale asse, che "stende" il primo piano sul secondo. Siano $\hat{j_1}, \hat{j_1}^{'} \in \mathbb{R}^2$ i versori della proiezione di una qualsiasi coppia omologa sul piano passante per l'origine e ortogonale all'asse dei mozzi. Si può calcolare l'angolo compreso tra i due versori:
+\begin{equation}
+	\theta_1 = arcos(\frac{\hat{j_1} \cdot \hat{j_1}^{'}}{\| \hat{j_1}\| \|\hat{j_1}^{'}\|})
+\end{equation}
+Si può definire la prima rotazione, utilizzando la rappresentazione asse-angolo come:
+\begin{equation}
+	R_1 = Rot(asse_{mozzi}, \theta_1)
+\end{equation} 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=420pt]{imgs/PianiSuStessoPiano.jpg}
+	\caption{Dopo la rotazione sull'asse dei mozzi i due piani sono equi orientati}
+	\label{rot:gb:samePlane}
+\end{figure}
+
 % rotazione 2d nel piano dei punti
+Al netto della prima rotazione $R_1$ si è nella situazione rappresentata in figura \ref{rot:gb:samePlane}. In generale però, come è possibile evincere dalla stessa figura, i punti omologhi ancora non coincidono. Si deve individuare un ulteriore rotazione.
+Si ha che i punti giacciono tutti sullo stesso piano, hanno origine coincidente ma sono ruotati. Si può utilizzare quanto fatto nel paragrafo precedente, infatti quest'ultimo è a tutti gli effetti un caso planare.
+Possiamo individuare alla stessa maniera allora:
+\begin{center}
+	$cos(\theta_2) = \phi_1(R_1P, P^{'}), \,\,$
+	$sin(\theta_2) = \phi_2(R_1P, P^{'})$
+\end{center} 
+dove $\phi_1(\cdot)$ e $\phi_2(\cdot)$ hanno lo stesso significato che nel paragrafo \ref{sec:groeb:plan}. Infine si calcola l'angolo
+\begin{equation}
+	\theta_2 = atan_2(cos(\theta_2), sin(\theta_2))
+\end{equation} 
+Si può definire la seconda rotazione, utilizzando la rappresentazione asse-angolo, come la rotazione intorno ad un asse unitario passante per l'origine e ortogonale ai piani.
+\begin{equation}
+R_2 = Rot(asse_{\bot Piano}, \theta_2)
+\end{equation} 
 % rotazione totale come motliplicazione delle due matrici di rotazione risultanti.
+Infine possiamo individuare la matrice di rotazione risultante semplicemente pre-moltiplicando $R_1$ per $R_2$, perché trasformazioni applicate in sequenza nel riferimento mobile solidale al primo piano.
+\begin{equation}
+	R = R_2R_1, R \in \mathbb{R}^{3 \times 3}
+\end{equation}
+
+Trovata la matrice di rotazione, si può procedere ad individuare il vettore di traslazione relativo tra i due set. Tale vettore può essere calcolato confrontando i centroidi al netto della rotazione:
+\begin{equation}
+t = w_c^{'} - Rw_c, t \in \mathbb{R}^d
+\end{equation}
+
 \section{Il metodo di Kabsch}
 \label{sec:kabsch}
 
@@ -206,7 +248,7 @@ possiamo individuare il massimo per questa quantità, rispettando il vincolo, co
 	\end{bmatrix}V^T
 \end{equation}
 
-Trovata la matrice di rotazione ottima, relativa ai due set, si può procedere ad individuare il vettore di traslazione relativo tra i due set. Si procede in maniera del tutto analoga a quanto fatto nel paragrafo \ref{sec:groeb:spaz} e per comodità si riporta qui la formula:
+Trovata la matrice di rotazione ottima, relativa ai due set, si può procedere ad individuare il vettore di traslazione relativo tra i due set. Si procede in maniera del tutto analoga a quanto fatto nel paragrafo \ref{sec:groeb:spaz} con l'unica differenza che in questo caso, avendo effettuato una rotazione che al contrario del suddetto caso fa coincidere il secondo set sul primo, la matrice $R$ va a pre-moltiplicare il vettore $a_c$ piuttosto che $b_c$.
 \begin{equation}
 	t = b_c - Ra_c, t \in \mathbb{R}^d
 \end{equation}
@@ -219,4 +261,23 @@ In prima istanza si può notare che il calcolo dei centroidi risulta corretto a 
 \begin{equation}
 	x_c = \frac{1}{N}\sum_{i = 1}^{N} \tilde{x_i} = \frac{1}{N}\sum_{i = 1}^{N} x_i + e_i \longrightarrow \hat{x} + E[e] = \hat{x}
 \end{equation}
-dove con $E[e]$ si indica il valore atteso del disturbo. Dove nella precedente relazione la probabilità di convergenza ri al crescere delle misure disponibili, grazie alla legge dei grandi numeri: 
+dove con $E[e]$ si indica il valore atteso del disturbo. La precedente relazione risulta valida grazie all'ipotesi di rumore bianco, in particolare con valore atteso nullo, e l'applicazione della legge dei grandi numeri. Aumentando il numero dei campioni cresce la probabilità di convergenza della media campionaria verso il valore atteso.
+
+Il calcolo della matrice di cross-correlazione avviene sempre a mezzo di tali misure, se consideriamo una qualsiasi componente della matrice $C$ si ha che:
+\begin{equation}
+	c_{ij} = \sum_{k = 1}^{N}  \tilde{X_{ik}} \tilde{Y_{kj}} \longrightarrow \sum_{k = 1}^{N} X_{ik} Y_{kj} + (\cdots) \begin{bmatrix}
+	E[e_x] \\
+	E[e_y]
+	\end{bmatrix} = \hat{c_{ij}}
+\end{equation}
+dove la quantità tra parentesi è una combinazione delle misure.
+
+A patto di usare un buon numero dei campioni si ha quindi un aumento della probabilità di individuare i centroidi e la matrice di cross-correlazione "veri". Il calcolo precedente, produce allora un risultato "vero", cioè relativo alle ai centroidi e la matrice di cross-correlazione privi di rumore.
+
+In caso di rumore, l'errore quadratico prodotto dal calcolo può essere un indice del rumore presente sulle misure.
+
+Al tendere del numero di campioni all'infinito, anche in caso di rumore, l'algoritmo individuato produce un risultato corretto con probabilità 1.
+
+
+
+%matrice di covarianza stimata converge a quella verà perchè su ogni elemento ci va la somma fino a N del disturbo in più che converge a 0
