@@ -27,9 +27,66 @@ In questo paragrafo si presenta una metodologia di risoluzione del problema in e
 
 \subsection{Il caso planare}
 \label{sec:groeb:plan}
+In questo paragrafo viene trattato il problema della matrice di trasformazione tra due set i punti nel piano, utilizzando gli strumenti di geometria algebrica visti nel paragrafo \ref{sec:Geom}. In particolare si vuole far ricorso al teorema (\ref{teo:elimination}), teorema dell'eliminazione, al fine di ottenere una soluzione analitica al problema.
 
+Il primo passo è quello di definire un set di polinomi che possa essere utilizzato per definire un ideale di partenza. Tale ideale, come si vedrà, sarà impiegato come base per individuare un set di conseguenze (equazioni omogenee polinomiali), dalle quali si ricaverà sia la matrice di rotazione che il vettore di traslazione.
 
+Procedendo con ordine, siano $w_1, w_1^{'}, w_2, w_2^{'} \in \mathbb{R}[w]^2$ (vettori polinomiali, crf. paragrafo \ref{sec:Geom}),  $t \in \mathbb{R}[t]^2$ e $R \in \mathbb{R}[r]^{2 \times 2}$, si definisce l'ideale base attraverso il seguente set di polinomi:
+\begin{align}
+	\begin{bmatrix}p_1 \\ p_2 \end{bmatrix} &:= w_1 - Rw_1^{'} - t,\\
+	\begin{bmatrix}p_3 \\ p_4 \end{bmatrix} &:= w_2 - Rw_2^{'} - t, \\
+	p_5 &:= det(R) - 1,\\
+	p_{6} &:= (w_{2x} - w_{1x})^2 + (w_{2y} - w_{1y})^2 - (w_{2x}^{'} - w_{1x}^{'})^2 - (w_{2y}^{'} - w_{1y}^{'})^2
+\end{align}
+dove: 
+\begin{equation}
+	R := \begin{bmatrix}
+	\,r_{11}, \,\, r_{12} \\
+	-r_{12}, \,\, r_{11}
+	\end{bmatrix}, \, t := \begin{bmatrix}	\,t_x \\ t_y\end{bmatrix}, w_i := \begin{bmatrix}	\,w_{ix} \\ w_{iy}\end{bmatrix}
+\end{equation}
+Si nota che i primi due blocchi di polinomi rappresentano la relazione di trasformazione tra i punti, il terzo e la forma scelta per $R$ la definiscono come ortonormale e con determinante (nel campo polinomiale) pari ad 1, cioè $R$ è una matrice di rotazione. Per quanto riguarda l'ultimo polinomio, esso identifica la relazione di rigidità tra i punti; infatti afferma che al netto della trasformazione la distanza relativa tra i punti omologhi resta invariata.
 
+Si definisce l'ideale attraverso i polinomi generatori suddetti:
+\begin{equation}
+	I := \left\langle p_1, \dots, p_{6}\right\rangle 
+\end{equation}
+
+Definito l'ideale $I$, si è proceduto a fissare un ordinamento lessico-grafico seguente:
+\begin{equation}
+	r_{11} \ge_{Lex} r_{12} \ge_{Lex} t_x \ge_{Lex} t_y
+\end{equation}
+mentre gli altri simboli sono trattati come coefficienti.
+
+Si è utilizzato il software Macaulay per il calcolo di una base di Groebner per l'ideale suddetto che rispettasse tale ordinamento, ed è mostrata di seguito.
+\begin{equation}
+	G := \left\langle g_1, \dots, g_6\right\rangle 
+\end{equation}
+\begin{align}
+g_1 &= w_{2x}^{'2}-2w_{1x}^{'}w_{2x}^{'}-w_{1x}^2-w_{1y}^2+w_{1x}^{'2}+2w_{1x}w_{2x}-w_{2x}^2+2w_{1y}w_{2y}-w_{2y}^2,\\
+g_2 &= w_{2y}^{'2}-2w_{1y}^{'}w_{2y}^{'}+w_{1y}^{'2}\\
+g_3 &= t_y +\phi_1(w_1, w_1^{'}, w_2, w_2^{'})/\phi_d(w_1, w_1^{'}, w_2, w_2^{'}),\\
+g_4 &= t_x - \phi_2(w_1, w_1^{'}, w_2, w_2^{'})/\phi_d(w_1, w_1^{'}, w_2, w_2^{'}),\\
+g_5 &= r_{12} - \phi_3(w_1, w_1^{'}, w_2, w_2^{'})/\phi_d(w_1, w_1^{'}, w_2, w_2^{'}),\\
+g_6 &= r_{11} - \phi_4(w_1, w_1^{'}, w_2, w_2^{'})/\phi_d(w_1, w_1^{'}, w_2, w_2^{'}).	
+\end{align}
+dove: 
+\begin{align}
+	\phi_d &= w_{1x}^2 + w_{1y}^2 - 2w_{1x}w_{2x} + w_{2x}^2 - 2w_{1y}w_{2y} + w_{2y}^2,\\ \nonumber
+	\phi_1 & = w_{1x}^2w_{1y} + w_{1y}^3 - w_{1y}w_{1y}^{'2} + w_{1y}w_{2x}^2 - w_{1y}^{'}w_{2x}w_{2x}^{'} - 2w_{1y}^2w_{2y}\\& + w_{1y}^{'2}w_{2y} + w_{1y}w_{2y}^2 + w_{1x}^{'2}(-w_{1y} + w_{2y}) + w_{1y}w_{1y}^{'}w_{2y}^{'} - w_{1y}^{'}w_{2y}w_{2y}^{'} \\&+ w_{1x}(-2w_{1y}w_{2x} + w_{1y}^{'}w_{2x}^{'} - w_{1x}^{'}w_{2y}^{'}) + w_{1x}^{'}(w_{1y}w_{2x}^{'} - w_{2x}^{'}w_{2y} + w_{2x}w_{2y}^{'}), \nonumber\\
+	\nonumber\phi_2 &= w_{1x}^3 - 2w_{1x}^2w_{2x} + w_{1x}^{'2}w_{2x} + w_{1x}(-w_{1x}^{'2} + w_{1y}^2 - w_{1y}^{'2} + w_{2x}^2\\& + w_{1x}^{'}w_{2x}^{'} - 2w_{1y}w_{2y} + w_{2y}^2 + w_{1y}^{'}w_{2y}^{'}) + w_{1y}^{'}(w_{1y}^{'}w_{2x} - w_{1y}w_{2x}^{'} \\& \nonumber+ w_{2x}^{'}w_{2y} - w_{2x}w_{2y}^{'}) - w_{1x}^{'}(w_{2x}w_{2x}^{'} - w_{1y}w_{2y}^{'} + w_{2y}w_{2y}^{'}),\\\nonumber
+	\phi_3 &= (-w_{1y}^{'})w_{2x} + w_{1y}w_{2x}^{'} - w_{2x}^{'}w_{2y} + w_{1x}^{'}(-w_{1y} + w_{2y}) + w_{1x}(w_{1y}^{'} - w_{2y}^{'})\\& + w_{2x}w_{2y}^{'},\\ \nonumber
+	\phi_4 &= w_{1x}w_{1x}^{'} + w_{1y}w_{1y}^{'} - w_{1x}^{'}w_{2x} - w_{1x}w_{2x}^{'} + w_{2x}w_{2x}^{'} - w_{1y}^{'}w_{2y} - w_{1y}w_{2y}^{'}\\& + w_{2y}w_{2y}^{'}
+\end{align}
+
+In particolare si nota che il caso in esame è piuttosto fortunato, nessuna eliminazione è necessaria. Infatti, si possono utilizzare gli ultimi quattro polinomi della base $G$ al fine di calcolare in forma chiusa la matrice $R$ e il vettore $t$.
+Pertanto la soluzione al problema è data da:
+\begin{align}
+	t_x &= \phi_2(w_1, w_1^{'}, w_2, w_2^{'})/\phi_d(w_1, w_1^{'}, w_2, w_2^{'}),\\
+	t_y &= - \phi_1(w_1, w_1^{'}, w_2, w_2^{'})/\phi_d(w_1, w_1^{'}, w_2, w_2^{'}),\\
+	r_{12} &= \phi_3(w_1, w_1^{'}, w_2, w_2^{'})/\phi_d(w_1, w_1^{'}, w_2, w_2^{'}),\\
+	r_{11} &= \phi_4(w_1, w_1^{'}, w_2, w_2^{'})/\phi_d(w_1, w_1^{'}, w_2, w_2^{'}).
+\end{align}
 \subsection{Il caso spaziale}
 \label{sec:groeb:spaz}
 
@@ -39,7 +96,7 @@ Forti della metodologia utilizzata per il caso planare, si è cercato in prima i
 La prima scelta da effettuare è relativa alla rappresentazione da usare per la matrice di rotazione: si può utilizzare una rappresentazione mediante matrice ortonormale (come fatto nel caso planare), oppure una rappresentazione strutturata. In alcune rappresentazioni, come in forma ortonormale i parametri da stimare sono più numerosi rispetto che con altre, ma ad un maggior numero di parametri corrisponde un aumento del numero dei vincoli. 
 Si è provato con differenti rappresentazioni quali forma ortonormale e quaternioni.
 
-Siano: $w_1, w_1^{'}, w_2, w_2^{'}, w_3, w_3^{'} \in \mathbb{R}^3$ rispettivamente i punti omologhi prima e dopo la rotazione per i tre punti considerati, i quali si suppongono noti. Siano $t \in \mathbb{R}^3$ il vettore di traslazione da stimare e $R \in \mathbb{R}^{3 \times 3}$ la matrice di rotazione da stimare. Per ciascuna rappresentazione si può utilizzare il seguente ideale:
+Siano: $w_1, w_1^{'}, w_2, w_2^{'}, w_3, w_3^{'} \in \mathbb{R}[w]^3$ (vettori polinomiali, crf. paragrafo \ref{sec:Geom}) rispettivamente i punti omologhi prima e dopo la rotazione per i tre punti considerati, i quali si suppongono noti. Siano $t \in \mathbb{R}[t]^3$ il vettore di traslazione da stimare e $R \in \mathbb{R}[r]^{3 \times 3}$ la matrice di rotazione da stimare. Per ciascuna rappresentazione si può utilizzare il seguente ideale:
 
 \begin{enumerate}
 	\item \textbf{Rappresentazione ortonormale}
@@ -67,7 +124,7 @@ Siano: $w_1, w_1^{'}, w_2, w_2^{'}, w_3, w_3^{'} \in \mathbb{R}^3$ rispettivamen
 	\end{center}
 \end{enumerate}
 
-Purtroppo in tutti e tre i casi riportati il software Macaulay non è stato in grado di portare a termine il calcolo in tempo utile. Infatti, si ricorda che il calcolo di una base di Groebner è un problema EXPSPACE-completo. 
+Purtroppo in tutti i casi riportati il software Macaulay non è stato in grado di portare a termine il calcolo in tempo utile. Infatti, si ricorda che il calcolo di una base di Groebner è un problema EXPSPACE-completo. 
 
 %estendo 2d
 Si è ritenuto allora che fosse più istruttivo un cambio di approccio.
@@ -92,13 +149,13 @@ Per ciascuno dei due set si calcoli il suo punto centroide $w_c$ e $w_c^{'}$ ris
 In prima istanza occorre traslare i due set di punti in modo che il punto centroide coincida con l'origine. Per fare ciò possiamo semplicemente sottrarre il punto centroide ai punti del relativo set.
 \begin{equation}
 p_i = w_i - w_c, \, \, 
-p_i^{'} = w_i - w_c^{'}
+p_i^{'} = w_i^{'} - w_c^{'}
 \end{equation}
-dove per comodità di notazione si sono definiti con la lettera "p" i punti al netto di tale operazione.
+dove per comodità di notazione si sono definiti con la lettera "p" i punti al netto di tale operazione. Siano allora $P = \left\lbrace p_1, p_2, p_3 \right\rbrace$ e $P^{'} = \left\lbrace p_1^{'}, p_2^{'}, p_3^{'} \right\rbrace$.
 
 % individuo asse mozzi
 \begin{defn}
-	Sia considerata una trasformazione (rotazione e traslazione) di un set di punti, si definisce \textbf{asse dei mozzi}, l'asse i cui punti, durante la trasformazione, subiscono una sola traslazione lungo lo stesso. 
+	Sia considerata una trasformazione (rotazione e traslazione) di un corpo, si definisce \textbf{asse dei mozzi}, l'asse i cui punti, durante la trasformazione, subiscono una sola traslazione lungo lo stesso. 
 \end{defn}
 
 \begin{obs}
@@ -138,13 +195,13 @@ Si può definire la prima rotazione, utilizzando la rappresentazione asse-angolo
 
 % rotazione 2d nel piano dei punti
 Al netto della prima rotazione $R_1$ si è nella situazione rappresentata in figura \ref{rot:gb:samePlane}. In generale però, come è possibile evincere dalla stessa figura, i punti omologhi ancora non coincidono. Si deve individuare un ulteriore rotazione.
-Si ha che i punti giacciono tutti sullo stesso piano, hanno origine coincidente ma sono ruotati. Si può utilizzare quanto fatto nel paragrafo precedente, infatti quest'ultimo è a tutti gli effetti un caso planare.
+Si ha che i punti giacciono tutti sullo stesso piano, hanno centroide coincidente ma sono ruotati. Si può utilizzare quanto fatto nel paragrafo precedente, infatti quest'ultimo è a tutti gli effetti un caso planare.
 Possiamo individuare alla stessa maniera allora:
 \begin{center}
-	$cos(\theta_2) = \phi_1(R_1P, P^{'}), \,\,$
-	$sin(\theta_2) = \phi_2(R_1P, P^{'})$
+	$cos(\theta_2) = \phi_4(R_1p_1, p_1^{'}, R_1p_2, p_2^{'})/\phi_d(R_1p_1, p_1^{'}, R_1p_2, p_2^{'}), \,\,$\\
+	$sin(\theta_2) = \phi_3(R_1p_1, p_1^{'}, R_1p_2, p_2^{'})/\phi_d(R_1p_1, p_1^{'}, R_1p_2, p_2^{'}),$
 \end{center} 
-dove $\phi_1(\cdot)$ e $\phi_2(\cdot)$ hanno lo stesso significato che nel paragrafo \ref{sec:groeb:plan}. Infine si calcola l'angolo
+dove $\phi_3(\cdot)$, $\phi_4(\cdot)$ e $\phi_d(\cdot)$ hanno lo stesso significato che nel paragrafo \ref{sec:groeb:plan}. Infine si calcola l'angolo
 \begin{equation}
 	\theta_2 = atan_2(cos(\theta_2), sin(\theta_2))
 \end{equation} 
@@ -272,7 +329,7 @@ Il calcolo della matrice di cross-correlazione avviene sempre a mezzo di tali mi
 \end{equation}
 dove la quantità tra parentesi è una combinazione delle misure.
 
-A patto di usare un buon numero dei campioni si ha quindi un aumento della probabilità di individuare i centroidi e la matrice di cross-correlazione "veri". Il calcolo precedente, produce allora un risultato "vero", cioè relativo alle ai centroidi e la matrice di cross-correlazione privi di rumore.
+A patto di usare un buon numero dei campioni si ha quindi un aumento della probabilità di individuare i centroidi e la matrice di cross-correlazione "veri". Il calcolo precedente, produce allora un risultato "vero", cioè relativo ai centroidi e la matrice di cross-correlazione privi di rumore.
 
 In caso di rumore, l'errore quadratico prodotto dal calcolo può essere un indice del rumore presente sulle misure.
 
