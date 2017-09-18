@@ -31,7 +31,7 @@ In questo paragrafo viene trattato il problema della matrice di trasformazione t
 
 Il primo passo è quello di definire un set di polinomi che possa essere utilizzato per definire un ideale di partenza. Tale ideale, come si vedrà, sarà impiegato come base per individuare un set di conseguenze (equazioni omogenee polinomiali), dalle quali si ricaverà sia la matrice di rotazione che il vettore di traslazione.
 
-Procedendo con ordine, siano $w_1, w_1^{'}, w_2, w_2^{'} \in \mathbb{R}[w]^2$ (vettori polinomiali, crf. paragrafo \ref{sec:Geom}),  $t \in \mathbb{R}[t]^2$ e $R \in \mathbb{R}[r]^{2 \times 2}$, si definisce l'ideale base attraverso il seguente set di polinomi:
+Procedendo con ordine, siano $w_1, w_1^{'}, w_2, w_2^{'} \in \mathbb{K}[w]^2$ (vettori polinomiali, crf. paragrafo \ref{sec:Geom}),  $t \in \mathbb{K}[t]^2$ e $R \in \mathbb{K}[r]^{2 \times 2}$, si definisce l'ideale base attraverso il seguente set di polinomi:
 \begin{align}
 	\begin{bmatrix}p_1 \\ p_2 \end{bmatrix} &:= w_1 - Rw_1^{'} - t,\\
 	\begin{bmatrix}p_3 \\ p_4 \end{bmatrix} &:= w_2 - Rw_2^{'} - t, \\
@@ -96,7 +96,7 @@ Forti della metodologia utilizzata per il caso planare, si è cercato in prima i
 La prima scelta da effettuare è relativa alla rappresentazione da usare per la matrice di rotazione: si può utilizzare una rappresentazione mediante matrice ortonormale (come fatto nel caso planare), oppure una rappresentazione strutturata. In alcune rappresentazioni, come in forma ortonormale i parametri da stimare sono più numerosi rispetto che con altre, ma ad un maggior numero di parametri corrisponde un aumento del numero dei vincoli. 
 Si è provato con differenti rappresentazioni quali forma ortonormale e quaternioni.
 
-Siano: $w_1, w_1^{'}, w_2, w_2^{'}, w_3, w_3^{'} \in \mathbb{R}[w]^3$ (vettori polinomiali, crf. paragrafo \ref{sec:Geom}) rispettivamente i punti omologhi prima e dopo la rotazione per i tre punti considerati, i quali si suppongono noti. Siano $t \in \mathbb{R}[t]^3$ il vettore di traslazione da stimare e $R \in \mathbb{R}[r]^{3 \times 3}$ la matrice di rotazione da stimare. Per ciascuna rappresentazione si può utilizzare il seguente ideale:
+Siano: $w_1, w_1^{'}, w_2, w_2^{'}, w_3, w_3^{'} \in \mathbb{K}[w]^3$ (vettori polinomiali, crf. paragrafo \ref{sec:Geom}) rispettivamente i punti omologhi prima e dopo la rotazione per i tre punti considerati, i quali si suppongono noti. Siano $t \in \mathbb{K}[t]^3$ il vettore di traslazione da stimare e $R \in \mathbb{K}[r]^{3 \times 3}$ la matrice di rotazione da stimare. Per ciascuna rappresentazione si può utilizzare il seguente ideale:
 
 \begin{enumerate}
 	\item \textbf{Rappresentazione ortonormale}
