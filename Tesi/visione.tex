@@ -79,18 +79,78 @@ Per risolvere il terzo problema si introduce un ulteriore passo detto \textbf{no
 \end{enumerate}
 Il precedente test è pensato in modo che, in caso di necessità, vengono scartati i punti chiave meno "marcati" e conseguentemente meno distinguibili. 
 
-L'ultimo passo che può essere impiegato per aumentare le prestazioni del rilevatore FAST è quello di impiegare una \textbf{rete neurale}. Essa può essere addestrata utilizzando i risultati forniti dello stesso FAST durante il funzionamento al fine di sostituire e combinare il test veloce e quello completo. A patto che il set di addestramento sia abbastanza vario e comprensivo di rumore, un addestramento supervisionato può ottenere un buon grado di efficacia ed efficienza. 
+L'ultimo passo che può essere impiegato per aumentare le prestazioni del rilevatore FAST è quello di impiegare una \textbf{rete neurale}. Essa può essere addestrata utilizzando i risultati forniti dello stesso FAST al fine di sostituire e combinare il test veloce e quello completo. A patto che il set di addestramento sia abbastanza vario e comprensivo di rumore, un addestramento supervisionato può ottenere un buon grado di efficacia ed efficienza. 
 % scrivere sta roba%
 
-Si conclude la presentazione dell'algoritmo con alcune riflessioni. FAST è un algoritmo di tipo euristico, come molti altri, ma nel caso generale risulta molto efficace. Per quanto riguarda il test in essere esso ha un basso impatto computazionale, inoltre il test può essere eseguito in parallelo per molti pixel alla volta. Come vedremo esso si presta ad una facile e efficiente implementazione su GPU.
+In figura \ref{vis:feature:detection} è possibile ammirare un esempio di individuazione dei punti chiave in un immagine. Quest'ultimi sono indicati con dei cerchi colorati. Inoltre si è utilizzata la soppressione dei punti chiave troppo vicini, utilizzando il concetto di non-maximal suppression.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=420pt]{imgs/fdetection.jpg}
+	\caption{Risultato dell'esecuzione dell'algoritmo FAST con non-maximal suppression attivata.}
+	\label{vis:feature:detection}
+\end{figure} 
+
+Si conclude la presentazione dell'algoritmo con alcune riflessioni. FAST è un algoritmo di tipo euristico, come molti altri, ma nel caso generale risulta molto efficace. Per quanto riguarda il test in essere esso ha un basso impatto computazionale, inoltre il test può essere eseguito in parallelo per molti pixel alla volta. Esso si presta ad una facile e efficiente implementazione sia su CPU (sfruttando la vettorizzazione) sia su GPU.
 
 \subsection{L'algoritmo BRIEF}
 \label{sec:det:brief}
+Nel precedente paragrafo si è introdotto il concetto di punto chiave e si è fornito un algoritmo atto al loro calcolo. Per poter procedere però, è necessario un ulteriore strumento atto a confrontarli. Infatti essi sono semplicemente delle coordinate in pixel. Occorre perciò definire un confronto tra punti chiave.
 
+Si introduce il concetto di \textbf{descrittori}. Anche in questo caso una definizione formale è difficile da fornire. Infatti, la forma e il funzionamento del descrittore è fortemente dipendente dall'algoritmo scelto. Informalmente, potremmo definire un descrittore come "un'impronta" o una "firma" del punto chiave. Un descrittore è considerato efficace se presenta la caratteristica di associare una firma molto differente a punti chiave simili.
+
+In letteratura esistono differenti tipologie di descrittori e algoritmi atti al loro calcolo; alcuni ad esempio utilizzando come firma dei valori in virgola mobile, altri utilizzano delle stringhe di bit. Essi si differenziano inoltre per il carico computazionale, di memoria e naturalmente per efficacia.
+Considerando l'obbiettivo real-time di questo lavoro di tesi, la scelta dell'algoritmo da utilizzare è ricaduta sull'algoritmo BRIEF. Esso infatti risulta veloce, ha poco impatto sulla memoria, e nel caso generale ha efficacia paragonabile ai suoi contendenti.
+
+L'algoritmo BRIEF, Binary Robust Independent Elementary Features, è presentato in \cite{bib4}. Esso genera dei descrittori sotto forma di stringhe di bit. Il vantaggio principale di considerare stringhe è che il confronto tra due keypoint può essere fatto in modo estremamente efficiente, con una sola operazione XOR.
+
+L'algoritmo BRIEF, durante il calcolo dei descrittori, fa inoltre in modo di mappare keypoint molto vicini in descrittori molto distanti, dove la distanza per le stringhe descrittrici può essere calcolata come la distanza di Hamming.
+
+In genere, algoritmi di tipo stringa, per ottenere i descrittori utilizzano tecniche simili ad HASH, talvolta rinforzate. In particolare, BRIEF funziona in questo modo:
+\begin{enumerate}
+	\item Si fissa un pattern di confronto, cioè viene fissato quali dei pixel appartenenti ad un intorno del punto chiave saranno utilizzati nel calcolo. Si selezionano, quindi, $n_d$ pixel, dove $n_d$ è la lunghezza in bit del descrittore. Esempi di pattern possono essere:
+	\begin{enumerate}
+		\item uniforme: i pixel scelti sono distribuiti in maniera uniforme dentro un quadrato centrato nel punto chiave. 
+		\item gaussiano: si utilizza una pseudo-distribuzione gaussiana, cioè si prendono più pixel vicino al punto chiave.
+		\item randomico: i pixel sono scelti a caso all'interno del suddetto quadrato.
+	\end{enumerate}
+	\item Per evitare che a causa di disturbo nell'immagine per uno stesso punto chiave si possano avere differenti descrittori, si applica un pre filtraggio dell'immagine stessa.
+	\item Per ogni bit della stringa ed in base al pattern scelto se ne fissa il valore secondo la formula:
+	\begin{equation}
+		\tau_i(p, q_i) := \begin{cases}
+		1, \qquad se \; I_p \leq I_{q_i}\\
+		0, \qquad altrimenti
+		\end{cases}
+	\end{equation}
+	dove con $p$ si è indicato il pixel punto chiave, $q_i$ l'i-esimo pixel scelto in base al pattern, appartente ad un intorno di $p$. Per $I_p$, come per il paragrafo precedente, si intende l'intensità del pixel $p$.
+\end{enumerate}
+
+In \cite{bib4} si può trovare una descrizione più accurata dei pattern, dei vari test di performance e confronti con altri algoritmi di descrizione. Si può evincere che a fronte di una maggiore velocità di esecuzione, si ha un efficienza identica o talvolta superiore ai suoi contendenti.
+
+Da punto di vista implementativo, si fa notare che è altamente parallelizzabile sia su CPU vettorizzate sia su GPU.
 \subsection{Brute Force matching}
 \label{sec:det:bmmatch}
 
+Fino a questo punto si è in grado di calcolare e descrivere i punti chiave di un immagine. Per assolvere il problema proposto si deve essere in grado di relazionare ciascun punto chiave di un immagine al suo corrispettivo in una seconda (ovviamente se esso è visibile nella seconda). 
 
+Resta da definire allora un ultimo concetto, cioè la struttura del comparatore o matcher che dovrebbe essere usata. Le scelte fatte nei precedenti paragrafi, insieme ad una implementazione che vedremo sarà altamente parallela, semplificano moltissimo questo ultimo punto. Infatti si utilizza un \textbf{comparatore a forza bruta}. Ogni punto chiave individuato nella prima immagine lo si confronta con tutti quelli individuati nella seconda. Il confronto è fatto attraverso il calcolo della distanza di Hamming tra i descrittori. Si sceglie poi quello che ha dato luogo alla distanza di Hamming più piccola. Per escludere dei falsi positivi si fissa una soglia minima per il riconoscimento, questo evita che un punto chiave non presente nella seconda immagine possa essere associato ad un altro differente.
+
+Sebbene possa sembrare non efficiente come approccio, si deve rammentare che una grande ottimizzazione è stata effettuata a monte grazie ai descrittori. Inoltre su architetture vettorizzate o su GPU un eventuale confronto più intelligente basato su percorsi decisionali darebbe luogo alla fine pratica ad un tempo di esecuzione solo maggiore. Infatti la regola base in questo tipo di architetture è che si devono evitare differenti percorsi logici tra i vari thread, pena perdita di parallelismo.
+
+Si mostrano due esempi di esecuzione rispettivamente in figura \ref{vis:feature:risStereo} e \ref{vis:feature:risTwo}. Le immagini campione sono affiancate, con dei cerchi colorati si indicano i punti chiave e con dei segmenti colorati le associazioni trovate. Si noti come grazie alla soglia limite ai punti chiave poco marcati o quelli non presenti nella seconda foto non vengano associati punti chiave errati.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=420pt]{imgs/stereoDetection.jpg}
+	\caption{Risultato dell'esecuzione del comparatore: FAST + BRIEF + Brute Force matcher su una coppia di immagini stereo.}
+	\label{vis:feature:risStereo}
+\end{figure} 
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=420pt]{imgs/TwoInstantDetection.jpg}
+	\caption{Risultato dell'esecuzione del comparatore: FAST + BRIEF + Brute Force matcher su due immagini in due punti di osservazione diversi}
+	\label{vis:feature:risTwo}
+\end{figure} 
+Nella prima si sono ricercati punti chiave in una coppia di immagini stereo, cioè affiancate e catturate in uno stesso istante, si può notare che i segmenti che mostrano l'associazione effettuata tra i punti chiave sono orizzontali, nel prossimo paragrafo ne sarà chiaro il motivo. Nella seconda invece si sono cercate feature comuni in due foto catturate dalla stessa camera in istanti (con conseguente spostamento del punto di osservazione) diversi. Si può notare infine che sebbene lo scenario scelto presenta molti punti chiave apparentemente simili, grazie all'uso di BRIEF essi vengano distinti in modo piuttosto accurato. 
 \section{Stereoscopia}
 \label{sec:stereo}
 
@@ -110,4 +170,5 @@ Si conclude la presentazione dell'algoritmo con alcune riflessioni. FAST è un a
 \section{Soluzione al problema}
 \label{sec:vision:solution}
 
+%mettere algoritmo finale che usa i due capitoli prima
 
