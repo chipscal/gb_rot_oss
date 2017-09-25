@@ -1,0 +1,37 @@
+\BOOKMARK [0][-]{chapter*.2}{Ringraziamenti}{}% 1
+\BOOKMARK [0][-]{chapter*.3}{Introduzione}{}% 2
+\BOOKMARK [0][-]{chapter.1}{Strumenti matematici}{}% 3
+\BOOKMARK [1][-]{section.1.1}{Geometria algebrica}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.2}{Decomposizione ai valori singolari}{chapter.1}% 5
+\BOOKMARK [0][-]{chapter.2}{Visual Observer}{}% 6
+\BOOKMARK [1][-]{section.2.1}{Motivazioni}{chapter.2}% 7
+\BOOKMARK [1][-]{section.2.2}{Approccio al problema}{chapter.2}% 8
+\BOOKMARK [0][-]{chapter.3}{Stima della matrice di trasformazione}{}% 9
+\BOOKMARK [1][-]{section.3.1}{Il problema: Superimposizione di Procrustes}{chapter.3}% 10
+\BOOKMARK [1][-]{section.3.2}{Il metodo di Groebner}{chapter.3}% 11
+\BOOKMARK [2][-]{subsection.3.2.1}{Il caso planare}{section.3.2}% 12
+\BOOKMARK [2][-]{subsection.3.2.2}{Il caso spaziale}{section.3.2}% 13
+\BOOKMARK [1][-]{section.3.3}{Il metodo di Kabsch}{chapter.3}% 14
+\BOOKMARK [0][-]{chapter.4}{Visione artificiale}{}% 15
+\BOOKMARK [1][-]{section.4.1}{Feature Detection e Matching}{chapter.4}% 16
+\BOOKMARK [2][-]{subsection.4.1.1}{L'algoritmo FAST}{section.4.1}% 17
+\BOOKMARK [2][-]{subsection.4.1.2}{L'algoritmo BRIEF}{section.4.1}% 18
+\BOOKMARK [2][-]{subsection.4.1.3}{Brute Force matching}{section.4.1}% 19
+\BOOKMARK [1][-]{section.4.2}{Stereoscopia}{chapter.4}% 20
+\BOOKMARK [2][-]{subsection.4.2.1}{Modello matematico del sensore fotografico}{section.4.2}% 21
+\BOOKMARK [2][-]{subsection.4.2.2}{Ricostruzione 3D}{section.4.2}% 22
+\BOOKMARK [1][-]{section.4.3}{Soluzione al problema}{chapter.4}% 23
+\BOOKMARK [0][-]{chapter.5}{Implementazione Framework}{}% 24
+\BOOKMARK [1][-]{section.5.1}{Strumenti utilizzati}{chapter.5}% 25
+\BOOKMARK [2][-]{subsection.5.1.1}{OpenCV}{section.5.1}% 26
+\BOOKMARK [2][-]{subsection.5.1.2}{CUDA}{section.5.1}% 27
+\BOOKMARK [1][-]{section.5.2}{Lo sviluppo}{chapter.5}% 28
+\BOOKMARK [2][-]{subsection.5.2.1}{Ambiente di sviluppo e target}{section.5.2}% 29
+\BOOKMARK [2][-]{subsection.5.2.2}{Obbiettivi di sviluppo e soluzioni}{section.5.2}% 30
+\BOOKMARK [0][-]{chapter.6}{Test}{}% 31
+\BOOKMARK [1][-]{section.6.1}{Il motore grafico Unity3D}{chapter.6}% 32
+\BOOKMARK [1][-]{section.6.2}{Vantaggi e svantaggi di una validazione con motore grafico}{chapter.6}% 33
+\BOOKMARK [1][-]{section.6.3}{Risultati ottenuti}{chapter.6}% 34
+\BOOKMARK [0][-]{chapter.7}{Conclusioni e sviluppi futuri}{}% 35
+\BOOKMARK [0][-]{chapter.7}{Elenco delle figure}{}% 36
+\BOOKMARK [0][-]{chapter*.5}{Bibliografia}{}% 37

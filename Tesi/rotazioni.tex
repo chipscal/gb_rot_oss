@@ -229,7 +229,7 @@ Si presenta ora una soluzione in grado di individuare la trasformazione ottima t
 
 Questo metodo è stato presentato per la prima volta in \cite{bib1} ad opera di W. Kabsch, in una prima formulazione si faceva uso del concetto di moltiplicatori di Lagrange, i quali avevano un impatto prestazionale abbastanza elevato. In questa recente formulazione invece si utilizza la decomposizione SVD, strumento il cui calcolo negli ultimi anni è diventato molto efficiente.
 
-La trasformazione che vogliamo individuare è composta, ovviamente, da una rotazione e una traslazione. Conviene iniziare con l'individuazione della prima, ragionando in modo analogo al precedente paragrafo, si comincia con il calcolo dei centroidi. Per comodità si riporta la formula per il calcolo del centroide di un set di punti:
+La trasformazione che vogliamo individuare è composta, ovviamente, da una rotazione e una traslazione. Conviene iniziare con l'individuazione della prima. Ragionando in modo analogo al precedente paragrafo, si comincia con il calcolo dei centroidi. Per comodità si riporta la formula per il calcolo del centroide di un set di punti:
 \begin{equation}
 	\label{rot:eq:cent}
 	a_c = \frac{1}{N}\sum_{i = 1}^{N}a_i

@@ -68,7 +68,7 @@ Si può notare che se la condizione del test veloce non è verificata allora non
 L'algoritmo allo stato attuale però presenta alcune criticità:
 \begin{enumerate}
 	\item Per $n < 12$ il test veloce non può essere generalizzato perché un pixel $p$ può superare il test completo anche se solo due dei pixel selezionati sono meno intensi e due più intensi.
-	\item L'efficienza del test dipende dalla scelta e dall'ordinamento dei pixel selezionati per il test. In genere però i punti per il successo del test dipende da questi fattori non sono buone feature. 
+	\item L'efficienza del test dipende dalla scelta e dall'ordinamento dei pixel selezionati per il test. In genere però i punti cui il successo del test dipende da questi fattori non sono buone feature. 
 	\item Molte feature vengono individuate una adiacente all'altra.
 \end{enumerate} 
 
@@ -150,19 +150,46 @@ Si mostrano due esempi di esecuzione rispettivamente in figura \ref{vis:feature:
 	\caption{Risultato dell'esecuzione del comparatore: FAST + BRIEF + Brute Force matcher su due immagini in due punti di osservazione diversi}
 	\label{vis:feature:risTwo}
 \end{figure} 
-Nella prima si sono ricercati punti chiave in una coppia di immagini stereo, cioè affiancate e catturate in uno stesso istante, si può notare che i segmenti che mostrano l'associazione effettuata tra i punti chiave sono orizzontali, nel prossimo paragrafo ne sarà chiaro il motivo. Nella seconda invece si sono cercate feature comuni in due foto catturate dalla stessa camera in istanti (con conseguente spostamento del punto di osservazione) diversi. Si può notare infine che sebbene lo scenario scelto presenta molti punti chiave apparentemente simili, grazie all'uso di BRIEF essi vengano distinti in modo piuttosto accurato. 
+Nella prima si sono ricercati punti chiave in una coppia di immagini stereo, cioè affiancate e catturate in uno stesso istante, si può notare che i segmenti che mostrano l'associazione effettuata tra i punti chiave sono orizzontali, nel prossimo paragrafo ne sarà chiaro il motivo. Nella seconda invece si sono cercate feature comuni in due foto catturate dalla stessa camera in istanti diversi (con conseguente spostamento del punto di osservazione). Si può notare infine che sebbene lo scenario scelto presenta molti punti chiave apparentemente simili, grazie all'uso di BRIEF essi vengano distinti in modo piuttosto accurato. 
 \section{Stereoscopia}
 \label{sec:stereo}
-
-
 %\subsection{Definizioni e problema}
 %\label{sec:stereo:def}
 
+Nel precedente paragrafo si è presentato un modo per il riconoscimento dei punti chiave in immagine distinte. Per poter procedere alla risoluzione del problema \ref{prob:vis:gensets} si presenterà in questo paragrafo una possibile soluzione per il calcolo delle coordinate 3d di un set di punti a partire dal informazione fornita da una coppia di immagini.
+
+
+%inserire motivazione alenia in vobserver
+%se riesco fare test di sensitività su f e B
+%valutare numericamente i risultati
+%qualche simulazione con tempo di esecuzione e errore
+%asse dei mozzi ------> asse del Mozzi
 
 \subsection{Modello matematico del sensore fotografico}
 \label{sec:stereo:modello}
+Al fine di poter effettuare informazioni da un immagine (o una coppia) occorre definire un modello matematico del sensore fotografico, il più semplice è detto \textbf{Pinhole Camera} ed è rappresentato in figura \ref{vis:stereo:pinhole}.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=280pt]{imgs/pinhole-and-tree2.png}
+	\caption{Esempio cattura immagine con sensore pinhole.}
+	\label{vis:stereo:pinhole}
+\end{figure} 
+Nel modello teorico in esame e con riferimento all'immagine \ref{vis:stereo:pinhole}, si considera una camera chiusa con un foro puntiforme (in pratica molto piccolo). La scatola è caratterizzata da due grandezze $d$ ed $h$. La prima è detta \textbf{distanza focale} è come si vedrà la sua conoscenza risulterà fondamentale nei ragionamenti che seguono. La seconda rappresenta grandezza la grandezza del film o pellicola o in chiave moderna la dimensione del sensore CMOS. Si fa notare che la scelta di quest'ultime grandezze definisce \textbf{l'angolo di visione} della camera, cioè il massimo angolo di ingresso dei raggi che possono essere catturati. Ad esempio, se si tiene fissata la grandezza del film e si diminuisce la distanza focale, si sarà in grado di catturare una porzione del mondo più ampia. In effetti sensori di questo tipo sono detti panoramici.
+Se si considera un raggio di luce riflesso da un oggetto, ad esempio quello riflesso dalla punta dell'albero in figura, quest'ultimo "entrerà" attraverso il foro nella camera scura e verrà proiettato sulla pellicola o il sensore. Sempre dalla stessa immagine si può notare un importate aspetto geometrico, cioè che i triangoli $\widehat{COY}$ e $\widehat{C^{'}OY^{'}}$ sono simili.
 
+Il precedente modello risulta per ovvie ragioni molto semplificato. In un sensore reale si possono considerare un numero molto maggiore di parametri e fattori. Ad esempio non si può far a meno di citare che le camere reali sono dotate di \textbf{lenti} atte a emulare il funzionamento del pinhole. Queste lenti introducono un inevitabile \textbf{distorsione} che fa si che un pixel dell'immagine non rappresenti il raggio di luce corretto. Questo fa venire meno la precedente proprietà per cui i suddetti triangoli sono simili. Fortunatamente tale distorsione può essere eliminata (quasi del tutto) attraverso procedure di calibrazione e raddrizzamento. In \cite{bib5} è indicato in dettaglio il funzionamento di queste ultime. Brevemente, le coordinate vengono ricalcolate utilizzando un modello della distorsione in forma di Taylor (tipicamente al sesto ordine) e ne vengono stimati i coefficienti attraverso una procedura sperimentale. In quest'ultima si fa catturare dal sensore un certo numero di immagini contenti un pattern noto (tipicamente una scacchiera o un insieme di cerchi) in posizioni differenti, poi i parametri vengono scelti con strumenti di minimizzazione.
 
+Nel seguito di questa trattazione, non si farà più riferimento al fenomeno della distorsione, perché come già accennato può essere eliminato facilmente, complica la trattazione e risulta ben documentato in qualsiasi testo di visione artificiale ed online. 
+
+Il modello Pinhole presenta però un inconveniente, cioè l'immagine catturata risulta capovolta. In effetti, il problema sorge dal fatto che il modello in questione cerca di mimare il funzionamento fisico del sensore, ma a livello matematico questo sforzo è inutile e può essere semplificato (in pratica i sensori reali provvedono a capovolgere l'immagine una volta catturata).
+Si può utilizzare un modello del tutto equivalente detto \textbf{modello sintetico} o \text{virtuale}, mostrato in figura \ref{vis:stereo:virtuale}.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=280pt]{imgs/synthetic-and-tree.png}
+	\caption{Esempio cattura immagine con sensore sintetico.}
+	\label{vis:stereo:virtuale}
+\end{figure} 
+Il piano di cattura viene capovolto rispetto all'asse $y$, mentre le grandezze $h$ e $d$ hanno il medesimo significato. Il vantaggio di questa formulazione è che l'immagine catturata risulta orientata in modo corretto, lo svantaggio è che si tralasciato il funzionamento fisico del sensore.
 \subsection{Ricostruzione 3D}
 \label{sec:stereo:ric3d}
 
