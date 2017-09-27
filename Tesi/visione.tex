@@ -189,9 +189,55 @@ Si può utilizzare un modello del tutto equivalente detto \textbf{modello sintet
 	\caption{Esempio cattura immagine con sensore sintetico.}
 	\label{vis:stereo:virtuale}
 \end{figure} 
-Il piano di cattura viene capovolto rispetto all'asse $y$, mentre le grandezze $h$ e $d$ hanno il medesimo significato. Il vantaggio di questa formulazione è che l'immagine catturata risulta orientata in modo corretto, lo svantaggio è che si tralasciato il funzionamento fisico del sensore.
+Il piano di cattura viene capovolto rispetto all'asse $y$, mentre le grandezze $h$ e $d$ hanno il medesimo significato. Il vantaggio di questa formulazione è che l'immagine catturata risulta orientata in modo corretto, lo svantaggio è che si è tralasciato il funzionamento fisico del sensore. Nel seguito verrà utilizzato quest'ultimo modello.
+
 \subsection{Ricostruzione 3D}
 \label{sec:stereo:ric3d}
+Nel precedente paragrafo si è esplicato, seppur in modo teorico, il funzionamento del sensore fotografico. Si è potuto evincere che l'informazione raccolta dallo stesso altro non è che una \textbf{proiezione} su un piano (il piano dell'immagine) dei punti della scena. Pertanto, una parte dell'informazione è andata perduta e non può essere recuperata utilizzando un solo sensore. Risulta abbastanza intuitivo allora pensare di utilizzarne più di uno (almeno due) e cercare di combinare le informazioni ad essi relative.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=420pt]{imgs/stereo2.jpg}
+	\caption{Coppia di immagini catturate da due sensori differenti nella scena.}
+	\label{vis:stereo:pair}
+\end{figure} 
+In generale, come già preannunciato, si possono utilizzare un numero arbitrario di sensori e possono essere posizionati in differenti maniere (purché catturino una parte comune della scena). Ad esempio in figura \ref{vis:stereo:pair} due immagini sono state catturate da due sensori posti in una differente posizione. Si può evincere che le immagini risultanti sono diverse, ed in particolare le proiezioni dei punti $P$ e $P_0$ nella foto di destra risultano più spostati verso sinistra.
+
+In questa sede si opta per una configurazione con due camere e \textbf{centro di fissazione} all'infinito, cioè il punto di intersezione degli assi di fissazione dei due sensori passanti per il punto di fuoco $O_i$ e il centro del piano dell'immagine $C_i$ è all'infinito; tali assi sono quindi paralleli. Si suppone inoltre che, rispetto ad un sistema di riferimento solidale al sensore di sinistra e con origine coincidente al punto $O_l$, il sensore di destra (e quindi il punto $O_r$) ha la sola coordinata X non nulla.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=360pt]{imgs/stereo.jpg}
+	\caption{Configurazione sistema stereoscopico.}
+	\label{vis:stereo:sistem}
+\end{figure} 
+
+Con riferimento alla figura \ref{vis:stereo:sistem}, si consideri un punto $P$ della scena, siano note la distanza tra i due sensori $T$, la lunghezza focale $f$ e i punti centrali delle camere $c_l$ e $c_r$ rispettivamente. Si suppone che il punto $P$ stesso venga catturato dalle due camere, cioè si conoscono i punti $p_l$ e $p_r$. \`{E} bene segnalare che l'individuazione di una corrispondenza tra due punti in due differenti immagini, e la comprensione quindi che essi corrispondano ad uno stesso punto della scena, è del tutto che banale. Allo state dell'arte attuale, esistono diversi approcci euristici caratterizzati alcuni da una miglior margine di errore, altri da un ridotto carico computazionale. Nel seguito si fornirà una soluzione a quest'ultimo problema.
+
+Ragionando per via geometrica, si possono ottenere le coordinate geometriche cercate. Sempre dalla suddetta figura si può facilmente comprendere che i triangoli  $\widehat{C_lO_lp_l}$ e $\widehat{O_pPO_l}$ sono simili ed allo stesso modo $\widehat{C_rO_rp_r}$ e $\widehat{O_pPO_r}$ anch'essi lo sono. 
+
+In primo luogo conviene calcolare un importante quantità, la disparità tra i punti $p_l$ e $p_r$. Essa è pari alla differenza in pixel delle coordinate x  tra i due suddetti punti nelle rispettive immagini. Si ribadisce che i due punti hanno la stessa coordinata y nelle immagini per via della struttura ipotizzata.
+\begin{equation}
+	d := p_{l_x} - p_{r_x}, d \ge 0, d \in \mathbb{Z}
+\end{equation}
+
+Se si immagina di "spostare" il triangolo $\widehat{C_rO_rp_r}$ tale da far coincidere il segmento $\overline{C_rO_r}$ con $\overline{C_lO_l}$, il triangolo risultante $\widehat{p_r^{'}O_lp_l}$ è simile al triangolo $\widehat{O_lPO_r}$. Allora, si può calcolare la coordinata Z con la seguente proporzione.
+\begin{equation}
+Z := \frac{Tf}{d}
+\end{equation}
+
+Si fissa il sistema di riferimento dell'osservatore su $O_l$ e con riferimento sempre alla suddetta figura si pongono l'asse Z e X appartenenti al piano del foglio, orientati rispettivamente verso l'alto e verso destra. L'asse Y sarà uscente dal foglio a completare un sistema di riferimento destrorso. 
+Per il calcolo della coordinata X si può ragionare nel seguente modo: dato che i triangoli $\widehat{p_r^{'}O_lp_l}$ è simile al triangolo $\widehat{O_lPO_r}$ allora il rapporto tra il segmento $\overline{p_lc_l}$ e la base del triangolo (la disparità) $p_l - p_r^{'} = d$ deve essere lo stesso che tra il segmento $\overline{O_lO_p} = X$ ed $\overline{O_lO_r} = T$. Ne segue che:
+\begin{equation}
+	X := \frac{(p_{l_x} - c_l) T}{d}
+\end{equation}
+Per la coordinata Y si può procedere in maniera analoga.
+
+Si riportano infine per comodità le relazioni individuate:
+\begin{align}
+	d &:= p_{l_x} - p_{r_x}, d \ge 0, d \in \mathbb{Z},\\
+	X &:= \frac{(p_{l_x} - c_{l_x}) T}{d},\\
+	Y &:= \frac{(p_{l_y} - c_{l_y}) T}{d},\\
+	Z &:= \frac{Tf}{d}
+\end{align}
 
 
 \section{Soluzione al problema}
