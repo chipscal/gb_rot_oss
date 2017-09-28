@@ -239,9 +239,49 @@ Si riportano infine per comodità le relazioni individuate:
 	Z &:= \frac{Tf}{d}
 \end{align}
 
+Al fine di completare il discorso intrapreso conviene dare una risposta al problema su posto. Si è infatti sollevato il problema relativo al "riconoscimento" dei punti $p_l$ e $p_r$. Si è già accennato inoltre che esistono molteplici soluzioni a questo problema, ognuna con le sue particolarità. Ad esempio si può citare lo stereo block matcher (stereoBM), il quale esegue un confronto fra blocchi di immagini al fine di individuare lo stesso blocco nelle due immagini stereo. Esso utilizza, al fine di efficienza, una delle osservazioni su fatte, cioè che (se le immagini non sono distorte) la coppia di punti $p_l$ e $p_r$ hanno la stessa coordinata Y nelle due immagini. Esegue quindi una ricerca in linea per tutti i punti dell'immagine di sinistra su quella di destra.
+
+In questa sede, siccome non ci si pone il problema di ottenere un informazione spaziale per tutti i punti della scena ma ne basta un sottoinsieme, si propone l'utilizzo del seguente metodo. Si può infatti ricorrere allo strumento introdotto nel paragrafo precedente: il \textbf{Feature Detection}. 
+
+Tale strumento può essere utilizzato nella seguente maniera: \textit{un punto chiave è un oggetto che può essere definito spostamento-invariante. Ad esempio infatti, uno spigolo resta uno spigolo anche se nell'immagine risulta traslato e/o ruotato (e scalato). Si possono allora ricercare i punti chiave nelle due immagini stereo (eventualmente in parallelo), confrontare i punti chiave trovati e individuare quindi, ove possibile, la relazione tra i punti chiave dell'immagine di sinistra e quella di destra. Trovate tali relazioni, per ogni coppia, si procede a calcolare la disparità e quindi alla ricostruzione dell'informazione spaziale come su visto.}
+
 
 \section{Soluzione al problema}
 \label{sec:vision:solution}
+A questo punto della trattazione, si è in grado quindi di affermare che il problema \ref{prob:vis:gensets} ha soluzione e se ne può fornirne una che, come tra poco si vedrà, utilizza ancora il fondamentale strumento del Feature Detection. Si riporta di seguito la procedura sintetizzata, dove si indicano con $M_{sx}^0$ e $M_{dx}^0$ rispettivamente l'immagine catturata dal sensore di sinistra e quello di destra all'istante precedente e, analogamente, con $M_{sx}^1$ e $M_{dx}^1$ quelle catturate all'istante attuale.
+
+La procedura risulta cosi composta:
+\begin{enumerate}
+	\item Si individuano i punti chiave in tutte le immagini utilizzando l'algoritmo FAST:
+	\begin{equation}
+		\nonumber [kp_{sx}^0, \; kp_{dx}^0, \; kp_{sx}^1, \; kp_{dx}^1] = trovaPuntiChiaveIn(M_{sx}^0, M_{dx}^0, M_{sx}^1, M_{dx}^1)
+	\end{equation} 
+	\item Si procede alla descrizione dei punti chiave utilizzando l'algoritmo BRIEF:
+	\begin{equation}
+		\nonumber [dp_{sx}^0, \; dp_{dx}^0, \; dp_{sx}^1, \; dp_{dx}^1] = descriviPuntiChiave(kp_{sx}^0, kp_{dx}^0, kp_{sx}^1, kp_{dx}^1)
+	\end{equation}
+	\item Si individuano le corrispondenze tra i descrittori nelle due immagini stereo, attraverso il comparatore a forza bruta, al fine di calcolare la disparità dei punti chiave individuati e generarne le coordinate spaziali.
+	\begin{align}
+		\nonumber &mtch^0 = trovaCorrispondenzaTra(dp_{sx}^0, \; dp_{dx}^0)\\
+		\nonumber &P^0 = calcolaCoordinateSpaziali(M_{sx}^0, M_{dx}^0, mtch^0)\\
+		\nonumber &mtch^1 = trovaCorrispondenzaTra(dp_{sx}^1, dp_{dx}^1)\\
+		\nonumber &P^1 = calcolaCoordinateSpaziali(M_{sx}^1, M_{dx}^1, mtch^1)
+	\end{align}
+	\item Si individuano le corrispondenze tra i punti chiave trovati rispettivamente nelle immagini sinistre all'istante precedente e quello attuale, e si utilizza questa informazione per generare due set contenenti le coordinate, rispetto al sistema solidale all'osservatore, dello stesso punto prima e dopo lo spostamento.
+	\begin{align}
+		\nonumber &mtch^{01} = trovaCorrispondenzaTra(dp_{sx}^0, dp_{sx}^1)\\
+		\nonumber &[S^0, S^1] = generaSet(P^0, P^1, mtch^{01})
+	\end{align}
+\end{enumerate}
+
+Si conclude infine sottolineando che nella precedente procedura diverse ottimizzazioni possono essere effettuate, e sono state effettuate. Si è scelto di riportarla in questa forma per maggiore chiarezza. Infatti, si può:
+\begin{enumerate}
+	\item mantenere i punti chiave e le rispettive descrizioni al fine di utilizzarle al passo successivo.
+	\item le ricerche dei punti chiave nelle diverse immagini possono essere fatte in parallelo e così anche per il calcolo dei descrittori.
+	\item il calcolo delle coordinate spaziali dei punti chiave può essere evitato per i punti per i quali non si è riuscito a trovare una corrispondenza prima e dopo lo spostamento.
+\end{enumerate}
+
+
 
 %mettere algoritmo finale che usa i due capitoli prima
 
