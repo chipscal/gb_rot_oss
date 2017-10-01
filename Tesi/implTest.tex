@@ -25,7 +25,7 @@ Prima di poter scrivere anche una sola linea di codice, si deve aver ben chiaro 
 	\item \textbf{Specifiche hardware consigliate:}
 		\begin{itemize}
 			\item CPU: x86\_64 o ARM con supporto OpenCL o SIMD/AVX,
-			\item GPU: coprocessore grafico NVidia ad alte prestazioni con supporto CUDA Shared Model $\ge$ 2.1,
+			\item GPU: coprocessore grafico Nvidia ad alte prestazioni con supporto CUDA Shared Model $\ge$ 2.1,
 		\end{itemize}			 
 \end{itemize}
 
@@ -89,12 +89,74 @@ L'architettura inoltre prevede che essi possano essere sostituiti da future impl
 \end{enumerate}
 \section{Validazione e test}
 \label{sec:test}
+Infine per concludere il capitolo si presentano dei test effettuati, atti allo scopo di validare i risultati ottenuti ed inoltre valutare le performance di esecuzione. I test sono stati effettuati sulla seguente macchina:
+\begin{itemize}
+	\item \textbf{CPU:} Intel i7-6700HQ @ 2.60 GHz,
+	\begin{itemize}
+		\item \textbf{Architettura:} x86\_64, 
+		\item \textbf{Specifiche:} AVX, AVX2, OpenCL,
+	\end{itemize}		
+	\item \textbf{Memoria:} 16 GB, 
+	\item \textbf{GPU:} Nvidia Geforce GTX 1070,
+	\begin{itemize}
+		\item \textbf{Memoria dedicata:} 8 GB, 
+		\item \textbf{Specifiche:} OpenCL, CUDA SM 6.1
+	\end{itemize}			
+	\item \textbf{Sistema Operativo:}  Windows.	 
+\end{itemize}
 
+Al fine di poter effettuare una validazione dei risultati, è necessario poter essere in grado di confrontare i risultati con una misura reale. Inoltre, si deve poter disporre di un ambiente di test adibito e di un prototipo. Sebbene le ultime due, a meno di ulteriore impiego di tempo, siano superabili, la prima risulta più ostica. Infatti la misura di controprova stessa sicuramente sarebbe affetta da un forte errore. Si é scelto, a valle di tutti questi fattori, di optare per un test in \textbf{ambiente virtuale} simulato. Al fine di ciò si è utilizzato un motore grafico, Unity3D. 
 \subsection{Il motore grafico Unity3D}
 \label{sec:unity}
 
-\subsection{Vantaggi e svantaggi di una validazione con motore grafico}
+Unity è un motore grafico cross-platform sviluppato da Unity Technologies, che viene utilizzato principalmente per sviluppare videogiochi e simulazioni per computer, console e dispositivi mobili. Unity supporta grafica 2D e 3D, ha un suo editor di sviluppo e permette lo scripting tramite C\# o altri linguaggi. Esso utilizza le seguenti API grafiche: Direct3D su Windows e Xbox One; OpenGL su Linux, MacOS e Windows; OpenGL ES su Android e iOS; WebGL sul web; e API proprietarie sulle console di videogiochi.
+Unity consente di specificare le impostazioni grafiche per ogni piattaforma supportata e fornisce il supporto per riflessioni, mappatura parallasse, occlusione dello spazio dello schermo (SSAO), ombre statiche e dinamiche, rendering e gli effetti post-elaborazione a schermo intero. 
+Unity offre anche servizi agli sviluppatori come: Unity Ads, Unity Analytics, Unity Cloud Build, Unity Everyplay, Unity IAP, Unity Multiplayer, Unity Performance Reporting e Unity Collaborate. Che permettono l'integrazione di pubblicità nei propri prodotti, velocizzare lo sviluppo e creare facilmente prodotti di rete.
+
+
+\subsection{Validazione con motore grafico}
 \label{sec:valid}
+Utilizzando il sudetto Unity3d si è proceduto alla creazione di uno scenario. Al fine di dimostrale le abilità del sistema, si è scelto uno scenario che presentasse caratteristiche scomode. Si è optato, anche in base ai modelli e texture disponibili gratuitamente, per svolgere i test all'interno di un astronave. Lo scenario dispone delle seguenti caratteristiche:
+\begin{enumerate}
+	\item presenta molte parti della scena simili e che potrebbero essere confuse,
+	\item sono presenti effetti di luce, ombre, riflessioni e fumo che sono tipicamente considerati problematici per la tipologia di strumento in esame,
+	\item in alcune zone della scena sono stati posti oggetti animati che per potrebbero comportare, per via del funzionamento attuale dello stimatore che suppone un ambiente circostante statico, un errore sulla stima.
+\end{enumerate}
+
+Si è quindi proceduto a creare un prototipo virtuale, cioè una coppia di camere solidali ad un supporto virtuale. Per effettuare il test vero e proprio, è stato adibito uno script che permettesse la cattura simultanea dalle due camere. Le immagini vengono poi memorizzate insieme all'informazione di posizione ed orientamento del supporto che fa le veci del robot mobile.
+
+Si è dovuto poi fissare i parametri $T = 0.4$ Unità Unity ed $f = 581.6$ visti nel capitolo \ref{chap:visione}. In particolare il secondo potrebbe non sembrare un valore tipico, infatti ad esempio una tipica lente reale ha una focale di lunghezza pari a 35 millimetri o poco più. Quest'ultimo valore deriva dal fatto che il motore grafico Unity non simula una camera reale ma semplicemente si limita ad effettuare delle proiezioni sul piano di cattura al fine di essere più veloce. Il valore è stato individuato mediante delle misure virtuali e stimato. Infatti invertendo la formula \ref{eq:stimaZ} si può ricavare il valore di f conoscendo $T$, la disparità $d$ associata al punto e la sua distanza reale dal punto di osservazione. Trattandosi di un ambiente virtuale quest'ultima informazione è facile da reperire. Nel caso reale, si effettua un procedimento simile effettuando delle vere misurazioni.  
+
+
+In figura \ref{vis:test:scena} è possibile ammirare qualche istantanea catturate all'interno dell'ambiente virtuale.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=440pt]{imgs/scene.png}
+	\caption{Alcune istantanee catturate all'interno dell'ambiente virtuale.}
+	\label{vis:test:scena}
+\end{figure} 
 
 \subsection{Risultati ottenuti}
 \label{sec:perf}
+Sono stati effettuati diversi test: sia dei singoli componenti di stima che del sistema nella sua totalità. Questo è quanto è emerso:
+
+\begin{itemize}
+	\item Algoritmi di stima: sono stati effettuati test introducendo un errore normale sulle misure con valore atteso nullo e devianza tra i $10^{-3} \div 10^{-1}$.
+	\begin{itemize}
+		\item Il metodo di Groebner: sebbene teoricamente valido ed istruttivo, esso non presenta una grande robustezza rispetto ai disturbi. Infatti, nessuna teoria è stata sviluppata a riguardo. Tipicamente l'errore di misura viene riportato sulla stima stessa e talvolta amplificato. La stima può essere migliorata ripetendo il calcolo più volte su coppie diverse e facendo la media campionaria del risultato.
+		\item Il metodo di Kabsch: i risultati ottenuti sono stati molto promettenti, infatti tipicamente l'errore di stima commesso veniva ridotto anche di diversi ordini di grandezza già a partire da un numero di punti esiguo pari a $10 \div 30$. Si è riscontrato un comportamento in accordo con quanto teoricamente proposto. Utilizzando un numero di punti piuttosto grande come 10000 si riesce ad ottenere una stima pressoché "perfetta".
+	\end{itemize}
+	\item Algoritmi di feature detection: in generale la stima delle feauture e il conseguente calcolo della disparità dei punti chiave si è rivelato più che soddisfacente. Si può affermare che all'aumentare della risoluzione dei sensori utilizzati si nota un miglioramento del risultato finale, ovviamente a discapito delle prestazioni. In accordo alle formule trovate, da notare che nel calcolo della coordinata Z c'è una divisione per d (la disparità), si è riscontrato un comportamento rispetto al quale la stima della distanza per i punti più lontani risulta meno accurata. Infatti se la disparità è piccola, l'errore di pochi pixel si traduce in distanze calcolate piuttosto differenti. Una stima errata della linea di base $T$ o della lunghezza focale della camera $f$ invece introduce un errore sistematico moltiplicativo sulla stima. Tipicamente però la conoscenza accurata di quest'ultimi è facile da ottenere.
+	
+	\item Visual Observer: per il sistema completo i risultati ottenuti sono stati anche in questo caso in linea a quanto sperato. Infatti con immagini ad una risoluzione di 640x480 si è ottenuto nella maggior parte dei casi una stima della posizione con precisione dell'ordine dei centesimi di unità Unity mentre per la matrice di rotazione un errore quadratico intorno ai 10 millesimi. Il fatto che l'orientamento venga stimato in modo migliore è giustificabile dal fatto che nella stima della matrice di rotazione un eventuale errore sistematico sulla stima delle distanze è del tutto irrilevante. Per quanto riguarda il tempo di esecuzione, utilizzando la macchina sopra scritta, esso si attesta a circa 30 ms sia in modalità OpenCL che CUDA. Quindi con una frequenza di circa 30 Hz. Se si disattivano le ottimizzazioni invece il tempo di esecuzione peggiora anche di due ordini di grandezza. Sebbene ci si attendevano prestazioni migliori di CUDA rispetto all'implentazione OpenCL, va detto che potrebbe essere dovuto ad una minore ottimizzazione effettuata nei metodi CUDA di openCV che sono stati utilizzati. Inoltre si sta utilizzando una scheda piuttosto recente nella quale quasi sicuramente è stata resa più performante rispetto al supporto ad OpenCL. 
+	La maggior parte dell'errore di stima è sicuramente imputabile al sistema di visione, alla bassa risoluzione delle immagini ed al fatto che troppo spesso i punti chiave considerati, nello scenario in esame, risultavano lontani. Le riflessioni, il fumo e le luci non sembrano invece comportare un grosso errore ma piuttosto limitano il numero di punti chiave individuati. Per quanto riguarda gli oggetti in movimento, ovviamente, essi in diversi casi introducono un errore. Si è notato però che qualora essi siano piuttosto uniformi e identificabili dai soli bordi, tipicamente venivano filtrati grazie alle proprietà della descrizione a mezzo di BRIEF. Inoltre riducendo il tempo di campionamento tipicamente essi risultano quasi statici ed introducono un errore minore.
+\end{itemize}
+
+Al netto di quanto sperimentato si è compreso che:
+\begin{enumerate}
+	\item Il sistema di stima migliore è sicuramente quello di Kabsch, grazie alla sua proprietà naturali di filtraggio della misura.
+	\item Si potrebbe investigare su qualche ulteriore algoritmo di stima in grado di gestire più corpi in movimento, così da evitare l'errore dovuto ad essi.
+	\item Utilizzando punti chiave vicini si migliora la stima. Si potrebbe pensare ad una modalità di scarto di punti troppo lontani.
+	\item La risoluzione dell'immagine è un grosso limite e si devo individuare il giusto compromesso tra accuratezza e prestazioni.
+	\item Il sistema risulta più che promettente. Infatti, un errore di stima dell'ordine dei centesimi è più che sufficiente in molti contesti di controllo.
+\end{enumerate}

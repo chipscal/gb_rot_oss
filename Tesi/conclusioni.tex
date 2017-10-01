@@ -1,3 +1,25 @@
 \chapter{Conclusioni e sviluppi futuri}
 
-Inserire qui le conclusioni trovate con la tesi, ed eventualmente eventuali idee per sviluppi futuri.
+In questo lavoro di tesi, si sono toccati diversi ambiti: dalla geometria alla stima, dalla visione stereoscopica fino al riconoscimento delle feature. Si è inoltre effettuato un grosso lavoro di progettazione e implementazione, si sono dovuti prima di tutto individuare i problemi da affrontare per poi, ovviamente, fornirne una soluzione. L'obiettivo iniziale era del tutto differente ed il risultato ottenuto è stato un susseguirsi di idee e tentativi. Talvolta il risultato poteva sembrare troppo lontano, ma procedendo a testa bassa, dividendo il problema in diversi più piccoli, da affrontare uno alla volta, si è riuscito a fornire una soluzione ad ognuno di essi. Si è potuto studiare strumenti innovativi, sperimentarli e talvolta scartarli per arrivare alla fine ad un prodotto finito, funzionante. Sicuramente il lavoro svolto ha ancora grossi margini di miglioramento, si dovrà lavorare sulla stabilità del software, sperimentarlo nel mondo reale e nuove funzionalità o algoritmi potranno essere inseriti. Grazie all'architettura progettata tale aspetto risulterà più semplice, si potranno modificare singole parti del software, fornire implementazioni diverse. Eventualmente, più persone potranno collaborare, migliorare il prodotto insieme e condividere quanto fatto. 
+
+In conclusione, si sono toccate differenti materie al fine di convergere verso un prodotto funzionante, aperto e aggiornabile.
+
+Si è fornito un possibile approccio risolutivo basato sull'utilizzo di strumenti appartenenti a campi differenti: stima, geometria e visione artificiale. Si sono forniti gli strumenti atti a rendere il lavoro svolto comprensibile anche da un lettore non ferrato in questi campi, nella speranza che esso possa essere di ispirazione e possa servire da punto di partenza per sviluppi futuri. 
+
+Il problema è stato diviso in uno di stima e uno di visione. Nel capitolo \ref{chap:stima} si è appunto studiato il primo problema, si sono presentate due differenti soluzioni: la prima basata sull'utilizzo di tecniche algebriche e geometriche. Si è pertanto studiato argomenti non facenti parte del corso di studio, quali le basi di Groebner e la teoria dell'eliminazione. Si è utilizzato il software Macaulay per applicare tali concetti e si è ottenuta una soluzione capace di stimare la matrice di rotazione e il vettore di traslazione nel caso planare. Tale soluzione è stata poi estesa al caso spaziale utilizzando concetti di geometria. In particolare si è dimostrato, in maniera differente e in accordo al risultato di Denavit ed Hartemberg, che un qualsiasi spostamento può essere raggiunto con soli due traslazioni e due rotazioni. Si è poi adattato un algoritmo, detto di Kabsch, utilizzato spesso in ambienti bio-informatici, al fine di ottenere una soluzione, in forma chiusa, più robusta ai disturbi di misura. Se ne è data la prova e nel capitolo \ref{chap:implTest} si mostrato il funzionamento numerico.
+
+Il secondo grande problema, presentato nel capitolo \ref{chap:visione}, ha riguardato la generazione di "riferimenti" da poter utilizzare nella stima. Il problema è stato affrontato utilizzando e studiando tecniche innovative appartenenti al campo della visione artificiale. Infine si è fornita una procedura costruttiva.
+
+Negli ultimi due capitoli si è proceduto a descrivere gli aspetti implementativi e di test delle prestazioni. Si è ottenuto un architettura snella, veloce e modulare. Si sono fornite poi diverse implementazioni, facenti uso di caratteristiche hardware diverse, per gli algoritmi presentati.
+
+In futuro, si prevede di continuare lo sviluppo e di trovare risposte ad ulteriori problemi riscontrati sia in sede teorica che in fase di test. Ad esempio si potrebbe:
+\begin{itemize}
+	\item Prevedere la possibilità di gestire diversi oggetti dinamici nella scena. Questo potrebbe essere fatto in differenti maniere:
+	\begin{itemize}
+		\item agendo a livello della stima ed individuando ulteriori algoritmi in grado di risolvere un problema che si potrebbe chiamare multy body Procustes. In cui si deve trovare la disposizione ottima di un gruppo di oggetti posti a confronto.
+		\item agendo a livello di identificazione dei punti, escludendo i punti chiave appartenenti ad oggetti ritenuti mobili. Si potrebbe fare tale distinzione utilizzando tecniche di machine learning e riconoscimento degli oggetti.
+	\end{itemize}
+	\item Costruire un prototipo e sperimentarne il funzionamento in un contesto reale.
+	\item Migliorare l'integrazione con Unity che allo stato attuale, per motivi tecnici e prestazionali, è stato utilizzato al solo fine di generare un input visivo offline. Con una migliore integrazione, si potrebbe fare in modo che un eventuale agente possa "navigare" e compiere scelte di controllo all'interno del mondo virtuale.
+	\item Migliorare quanto fatto, rendendo il software sempre più veloce e meno affetto da errori.
+\end{itemize}
