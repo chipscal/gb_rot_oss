@@ -1,0 +1,14 @@
+\select@language {italian}
+\select@language {italian}
+\beamer@sectionintoc {1}{Introduzione}{3}{0}{1}
+\beamer@sectionintoc {2}{Stima della matrice di trasformazione}{7}{0}{2}
+\beamer@subsectionintoc {2}{1}{Il metodo di Groebner}{8}{0}{2}
+\beamer@subsectionintoc {2}{2}{Il metodo di Kabsch}{21}{0}{2}
+\beamer@sectionintoc {3}{Visione artificiale}{31}{0}{3}
+\beamer@subsectionintoc {3}{1}{Features detection}{32}{0}{3}
+\beamer@subsectionintoc {3}{2}{Stereovisione: calcolo delle coordinate 3D}{37}{0}{3}
+\beamer@sectionintoc {4}{Implementazione}{43}{0}{4}
+\beamer@subsectionintoc {4}{1}{Analisi dei requisiti}{43}{0}{4}
+\beamer@subsectionintoc {4}{2}{L'architettura}{44}{0}{4}
+\beamer@sectionintoc {5}{Test delle prestazioni}{45}{0}{5}
+\beamer@sectionintoc {6}{Conclusioni e sviluppi futuri}{48}{0}{6}
