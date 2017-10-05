@@ -1,0 +1,12 @@
+\BOOKMARK [2][]{Outline0.1}{Introduzione}{}% 1
+\BOOKMARK [2][]{Outline0.2}{Stima della matrice di trasformazione}{}% 2
+\BOOKMARK [3][]{Outline0.2.1.8}{Il metodo di Groebner}{Outline0.2}% 3
+\BOOKMARK [3][]{Outline0.2.2.21}{Il metodo di Kabsch}{Outline0.2}% 4
+\BOOKMARK [2][]{Outline0.3}{Visione artificiale}{}% 5
+\BOOKMARK [3][]{Outline0.3.1.32}{Features detection}{Outline0.3}% 6
+\BOOKMARK [3][]{Outline0.3.2.37}{Stereovisione: calcolo delle coordinate 3D}{Outline0.3}% 7
+\BOOKMARK [2][]{Outline0.4}{Implementazione}{}% 8
+\BOOKMARK [3][]{Outline0.4.1.43}{Analisi dei requisiti}{Outline0.4}% 9
+\BOOKMARK [3][]{Outline0.4.2.44}{L'architettura}{Outline0.4}% 10
+\BOOKMARK [2][]{Outline0.5}{Test delle prestazioni}{}% 11
+\BOOKMARK [2][]{Outline0.6}{Conclusioni e sviluppi futuri}{}% 12

@@ -1,0 +1,13 @@
+*.aux
+*.AUX
+*.dvi
+*.DVI
+*.pdf
+*.PDF
+*.log
+*.LOG
+*.toc
+*.TOC
+*.synctex.gz
+*.lof
+*.LOF
