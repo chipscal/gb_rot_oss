@@ -89,20 +89,23 @@
 
 \title[Visual Observer]{Realizzazione di un software per la stima del posizionamento di un corpo rigido con metodi di visione e validazione attraverso l'uso di un motore grafico} % The short title appears at the bottom of every slide, the full title is only on the title page
 
-\author{Luca Calacci} % Your name
+%\author{Luca Calacci} % Your name
+\author{\texorpdfstring{Luca Calacci\\Relatore: Daniele Carnevale \\Correlatori: Corrado Possieri, Domenico Cascone}{Luca Calacci}}
 \institute[Università Tor Vergata] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
 {
 Università degli Studi di Roma - Tor Vergata \\ % Your institution for the title page
 \medskip
 \textit{luca.calacci@gmail.com} % Your email address
 }
-\date{\today} % Date, can be changed to a custom date
+\date{9 ottobre 2017}%\today} % Date, can be changed to a custom date
 
 \begin{document}
 
 \begin{frame}
 \titlepage % Print the title page as the first slide
 \end{frame}
+
+
 
 \begin{frame}
 \frametitle{Contenuti} % Table of contents slide, comment this block out to remove it
@@ -339,7 +342,7 @@ Si presentano due soluzione basate su approcci diversi:
 	
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=180pt]{imgs/AsseMozzi.jpg}
+		\includegraphics[width=220pt]{imgs/AsseMozzi.jpg}
 		\caption{Calcolo dell'asse del Mozzi attraverso intersezione dei piani omologhi}
 		\label{rot:gb:imgMozzi}
 	\end{figure} 
@@ -352,6 +355,7 @@ Si presentano due soluzione basate su approcci diversi:
 	\begin{equation}
 	\theta_1 = arcos(\frac{\hat{j_1} \cdot \hat{j_1}^{'}}{\| \hat{j_1}\| \|\hat{j_1}^{'}\|})
 	\end{equation}
+	Si sceglie la soluzione che permette di ottenere una rotazione propria al passo successivo.
 	\item Si può definire la prima rotazione, utilizzando la rappresentazione asse-angolo come:
 	\begin{equation}
 	R_1 = Rot(asse_{mozzi}, \theta_1)
@@ -364,7 +368,7 @@ Si presentano due soluzione basate su approcci diversi:
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=180pt]{imgs/PianiSuStessoPiano.jpg}
+	\includegraphics[width=240pt]{imgs/PianiSuStessoPiano.jpg}
 	\caption{Dopo la rotazione sull'asse del Mozzi i due piani sono equi orientati}
 	\label{rot:gb:samePlane}
 \end{figure} 
@@ -398,7 +402,7 @@ Si presentano due soluzione basate su approcci diversi:
 	\end{equation}
 	\item Il vettore di traslazione può essere calcolato confrontando i centroidi al netto della rotazione:
 	\begin{equation}
-	t = w_c^{'} - Rw_c, t \in \mathbb{R}^d
+	t = w_c^{'} - Rw_c, t \in \mathbb{R}^3
 	\end{equation}
 	\item la matrice di trasformazione può essere calcolata come una roto-traslazione.
 \end{itemize}
@@ -618,7 +622,7 @@ Si presentano due soluzione basate su approcci diversi:
 \begin{itemize}
 	\item L'algoritmo FAST (Feature from Accelerated Segment Test) è adibito all'estrazione dei punti chiave.
 	\item Caratteristiche: molto efficace, veloce e parallelizzabile.
-	\item Funzionamento: ricerca spigoli nell'immagine.
+	\item Funzionamento: pre-test veloce, segment test, non-maximus suppression.
 \end{itemize}
 \begin{figure}[h]
 	\centering
@@ -833,8 +837,38 @@ I test sono stati effettuati sulla seguente macchina:
 \end{frame}
 
 \begin{frame}
-\frametitle{Risultati}
+\frametitle{Test effettuati}
 %arch
+\begin{itemize}
+	\item \textbf{Algoritmi di stima:}
+	\begin{itemize}
+		\item \textbf{Errore in misura} N(0, $10^{-3} \div 10^{-1}$)
+		\item \textbf{Groebner:}
+			\begin{itemize}
+				\item \textbf{Tempo esecuzione:} $10^{-6}$ sec
+				\item \textbf{Errore di stima:} \hspace{10pt} $10^{-3} \div 10^{-1}$ (errore quadratico sulle matrici)
+			\end{itemize} 
+		\item \textbf{Kabsch:}
+		\begin{itemize}
+			\item \textbf{Numero punti:} \hspace{28pt} $3 \div 10^{4}$ 
+			\item \textbf{Tempo esecuzione:} $10^{-6} \div 10^{-5}$ sec
+			\item \textbf{Errore di stima:} \hspace{10pt} $10^{-3} \div 10^{-5}$ (errore quadratico sulle matrici)
+		\end{itemize} 
+	\end{itemize}		
+	\item \textbf{Visual observer:}
+	\begin{itemize}
+		\item \textbf{Risoluzione immagini:} 640x480 pixels
+		\item \textbf{Max KeyPoint:} 500
+		\item \textbf{Tempo esecuzione:}
+		\begin{itemize}
+			\item \textbf{CPU:}  \hspace{11pt}  0.450 sec
+			\item \textbf{OpenCL:} 0.027 sec
+			\item \textbf{CUDA:} \hspace{4pt} 0.031 sec
+		\end{itemize}
+		\item \textbf{Errore di stima:} $\approx 10^{-2}$ unità Unity
+	\end{itemize} 		
+	
+\end{itemize}
 \end{frame}
 
 %------------------------------------------------
@@ -843,11 +877,31 @@ I test sono stati effettuati sulla seguente macchina:
 \begin{frame}
 \frametitle{Conclusioni}
 %conl
+\begin{itemize}
+	\item Si sono studiati nuovi strumenti innovativi:
+	\begin{itemize}
+		\item geometria algebrica
+		\item stereovisione
+	\end{itemize}
+	\item Si è progettato e implementato un software di stima della posizione ed orientamento basato su tali strumenti
+	\item Si è utilizzato un motore grafico per generare un mondo virtuale di test.
+	\item Si sono valutate le performance ottenute, soprattutto in ottica di una futura implementazione real-time
+\end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Sviluppi futuri}
 %conl
+\begin{itemize}
+	\item Prevedere la possibilità di gestire diversi oggetti dinamici.
+	\begin{itemize}
+		\item a livello di stima: multy body Procustes
+		\item a livello di identificazione: machine learning per riconoscimento degli oggetti mobili.
+	\end{itemize}
+	\item Costruire un prototipo e sperimentarne il funzionamento in un contesto reale.
+	\item Migliorare l'integrazione con Unity: input online, controllo agente.
+	\item Bug-fix, varie ed eventuali.
+\end{itemize}
 \end{frame}
 
 %------------------------------------------------
